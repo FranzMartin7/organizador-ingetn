@@ -387,7 +387,7 @@
         var calendarioVista = document.getElementById('calendarioVista');
         var calendar = new FullCalendar.Calendar(calendarioVista, {
             slotMinTime: "07:30:00",
-            slotMaxTime: "20:30:00",
+/*             slotMaxTime: "20:30:00", */
             initialView: 'timeGridWeek',
             firstDay: 1,
             slotLabelFormat: 'H:mm',
@@ -400,10 +400,11 @@
             eventOverlap: false,
             expandRows:true,
             hiddenDays: [ 0 ],
-            height:'auto',
+            /* height:'auto', */
             stickyHeaderDates:true,
             stickyFooterScrollbar: true,
             dayMinWidth:120,
+            contentHeight:'auto',
             views: {
                 timeGridWeek: {
                     dayHeaderContent: function(arg) {
@@ -485,7 +486,7 @@
             e.preventDefault();
             calendar.refetchEvents();
             calendar.updateSize()
-            panelHorarios.toggleClass('fullscreen');
+            panelHorarios.toggleClass('pantallaCompleta');
         });
         /* Evento para retroceder la diapositiva */
         btnAnterior.on('click',function(e){

@@ -151,13 +151,13 @@ return [
     |
     */
 
-    'sidebar_mini' => 'md',
-    'sidebar_collapse' => true,
+    'sidebar_mini' => 'lg',
+    'sidebar_collapse' => false,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'bg-primario',
-    'sidebar_scrollbar_auto_hide' => 'l',
+    'sidebar_scrollbar_auto_hide' => 'n',
     'sidebar_nav_accordion' => true,
     'sidebar_nav_animation_speed' => 300,
 
@@ -173,7 +173,7 @@ return [
     |
     */
 
-    'right_sidebar' => true,
+    'right_sidebar' => false,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
     'right_sidebar_slide' => true,
@@ -409,6 +409,15 @@ return [
             'icon'        => 'fas fa-edit',
             'can'        => 'auxiliar.eventosEdicion',
             'icon_color' => 'cyan'
+/*             'label'       => 4,
+            'label_color' => 'success', */
+        ],
+        [
+            'text'        => 'Horarios',
+            'url'         => '/inicioEstudiante/horario',
+            'icon'        => 'fas fa-clipboard-list',
+            'can'        => 'auxiliar.eventosVista',
+            'icon_color' => 'purple'
 /*             'label'       => 4,
             'label_color' => 'success', */
         ],
