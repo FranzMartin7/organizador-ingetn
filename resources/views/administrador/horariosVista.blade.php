@@ -486,7 +486,7 @@
             e.preventDefault();
             calendar.refetchEvents();
             calendar.updateSize()
-            panelHorarios.toggleClass('pantallaCompleta');
+            panelHorarios.toggleClass('fullscreen');
         });
         /* Evento para retroceder la diapositiva */
         btnAnterior.on('click',function(e){
