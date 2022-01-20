@@ -16,6 +16,10 @@
             @page {
                 size: 11in 8.5in;
                 margin: 8mm 8mm 8mm 8mm;
+                -webkit-print-color-adjust:exact;
+                -moz-print-color-adjust:exact;
+                -ms-print-color-adjust:exact;
+                print-color-adjust:exact;
             }
             #contenido{
                 width: 100%;
