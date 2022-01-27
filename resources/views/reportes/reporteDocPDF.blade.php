@@ -77,7 +77,7 @@
                 <thead class="text-center">
                     <tr class="bg-light">
                         <th class="align-middle" style="border: black 1px solid; width: 10%;" scope="col">FECHA</th>
-                        <th class="align-middle" style="border: black 1px solid; width: 13%;" scope="col">ACTIVIDAD</th>
+                        <th class="align-middle" style="border: black 1px solid; width: 17%;" scope="col">ACTIVIDAD</th>
                         <th class="align-middle" style="border: black 1px solid;" scope="col">DESCRIPCIÓN</th>
                         <th class="align-middle" style="border: black 1px solid; width: 12%;" scope="col">AULA</th>
                         <th class="align-middle" style="border: black 1px solid; width: 8%;" scope="col">INICIO</th>
@@ -88,7 +88,7 @@
                     @foreach($eventos as $valor)
                     <tr>
                         <td class="text-center" style="border: black 1px solid;">{{ $valor->fecha->format('d/m/Y') }}</td>
-                        <td class="text-center" style="border: black 1px solid;">{{ $asignaturas->actividades->actividad }}</td>
+                        <td class="text-center" style="border: black 1px solid;">{{ $valor->actividades->actividad }}</td>
                         <td style="border: black 1px solid;">{{ $valor->descripcion }}</td>
                         <td class="text-center" style="border: black 1px solid;">{{ $valor->aulas->aula }}</td>
                         <td class="text-center" style="border: black 1px solid;">{{ $valor->horaInicio->format('G:i') }}</td>

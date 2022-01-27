@@ -188,6 +188,8 @@
                     return datos;
                 }
             })
+            mesLiteral.val(moment(mes.val()).format('MMMM'));
+            periodo.val(convPeriodo(mes.val()))
         })
         /* Funcion para convertir periodo */
         function convPeriodo(mes) {

@@ -73,7 +73,7 @@ class UserController extends Controller
             'apellido_paterno'=> 'required',
             'apellido_materno'=> 'required',
             'nivel'=> 'required',
-            'email'=> 'required|email||unique:users,email',
+            'email'=> 'required|email|unique:users,email',
             'contraseña'=> 'required',
             'estado'=> 'required',
             'titulo'=> 'required',
@@ -142,7 +142,7 @@ class UserController extends Controller
             'apellido_paterno'=> 'required',
             'apellido_materno'=> 'required',
             'nivel'=> 'required',
-            'email'=> 'required|email',
+            'email'=> 'required|email|unique:users,email,'.$request->id,
             /* 'contraseña'=> 'required', */
             'estado'=> 'required',
             'titulo'=> 'required',

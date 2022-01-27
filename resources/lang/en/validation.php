@@ -16,7 +16,7 @@ return [
     'accepted' => 'The :attribute must be accepted.',
     'accepted_if' => 'The :attribute must be accepted when :other is :value.',
     'active_url' => 'The :attribute is not a valid URL.',
-    'after' => 'The :attribute must be a date after :date.',
+    'after' => 'El campo :attribute debe ser un valor mayor a :date.',//'The :attribute must be a date after :date.',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
     'alpha' => 'The :attribute must only contain letters.',
     'alpha_dash' => 'The :attribute must only contain letters, numbers, dashes and underscores.',
@@ -120,9 +120,9 @@ return [
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => 'The :attribute must be a string.',
     'timezone' => 'The :attribute must be a valid timezone.',
-    'unique' => 'El valor de :attribute ya ha sido usado por otro usuario.',//'The :attribute has already been taken.',
+    'unique' => 'El valor de :attribute ya está siendo usado en otro registro.',//'The :attribute has already been taken.',
     'uploaded' => 'The :attribute failed to upload.',
-    'url' => 'The :attribute must be a valid URL.',
+    'url' => 'El campo :attribute debe ser un URL válido.',//'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
     /*

@@ -50,10 +50,11 @@ class EventoController extends Controller
             'fecha' => 'required',
             'aula' => 'required',
             'hora_inicio' => 'required|date_format:H:i',
-            'hora_final' => 'required|date_format:H:i',
+            'hora_final' => 'required|date_format:H:i|after:hora_inicio',
             'actividad' => 'required',
             'tema_desarrollado' => 'required',
             'acontecimiento_id' => 'required',
+            'enlace' => 'nullable|url'
         ]);
         $respuesta = Evento::create([
             'periodo_id'=>request('periodo'),
@@ -158,10 +159,11 @@ class EventoController extends Controller
             'fecha' => 'required',
             'aula' => 'required',
             'hora_inicio' => 'required|date_format:H:i',
-            'hora_final' => 'required|date_format:H:i',
+            'hora_final' => 'required|date_format:H:i|after:hora_inicio',
             'actividad' => 'required',
             'tema_desarrollado' => 'required',
             'acontecimiento_id' => 'required',
+            'enlace' => 'nullable|url'
         ]); 
         $respuesta = Evento::find($request->id);
         $respuesta->periodo_id = $request->periodo;

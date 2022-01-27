@@ -21,7 +21,7 @@
         <div class="modal-content">
         <div class="modal-header bg-primary">
             <div class="modal-title text-white">
-                <div class="lead">Datos Materia</div>
+                <div class="lead" id="tituloForm"></div>
             </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -98,6 +98,7 @@
 <script>
     $(document).ready(function(){
         /* Selectores que se modificaran para gestionar materias */
+        var tituloForm = $('#tituloForm');
         var tablaGrupos = $('#tablaGrupos');
         var datosGrupo; 
         var txtIdGrupo=$('#txtIdGrupo');
@@ -133,14 +134,15 @@
                 nuevoGrupo: {
                     text: 'Nuevo grupo',
                     icon: 'fa-plus',
-                    attributes:{title: 'NUEVO GRUPO'},
+                    attributes:{title: 'Nuevo GRUPO'},
                     event: function () { 
                         var datos;
                         datos = {
                             idGrupo: '',
                             idMateria: '',
                             sigla: '',
-                            grupo: ''
+                            grupo: '',
+                            title:'Nuevo GRUPO'
                         };
                         btnAgregar.show();
                         btnGuardar.hide();
@@ -181,6 +183,7 @@
                             idMateria: row.materia_id,
                             grupo: row.grupo,
                             sigla: row.sigla,
+                            title:'Editar GRUPO'
                         };
                         btnAgregar.hide();
                         btnGuardar.show();
@@ -196,7 +199,7 @@
                     }
                 },
                 formatter: function(value,row,index){
-                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarMateria btn btn-sm"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarGrupo btn btn-sm"><i class="fas fa-trash text-danger"></i></a></div>';                
+                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarMateria btn btn-sm" title="Editar grupo"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarGrupo btn btn-sm" title="Eliminar grupo"><i class="fas fa-trash text-danger"></i></a></div>';                
                     return btnOpciones;
                 }
             }]
@@ -217,6 +220,7 @@
         /* Funcion para abrir el formulario de materias */
         function formularioGrupo(datos){
             $('#errorValidacion').html('');
+            tituloForm.html(datos.title)
             txtIdGrupo.val(datos.idGrupo);
             txtIdMateria.val(datos.idMateria);
             txtGrupo.val(datos.grupo);
@@ -232,7 +236,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Crear materia',
-                content: '¿Confirma asignar el grupo ' + datosGrupo.grupo + ' a la materia ' + datosGrupo.sigla + '?',
+                content: '¿Confirma asignar el grupo ' + datosGrupo.grupo + ' a la materia  seleccionada?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -311,8 +315,8 @@
                 success: function(msg){
                     if(msg){
                         modificarMaterias.modal('hide');
-                        tablaGrupos.bootstrapTable('refresh');
-                        $('#errorValidacion').html('');              
+                        $.alert('Cambios guardados con éxito!');
+                        tablaGrupos.bootstrapTable('refresh');            
                     }
                 },
                 error: function(error){

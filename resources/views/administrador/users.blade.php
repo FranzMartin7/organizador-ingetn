@@ -20,7 +20,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <div class="modal-title text-white">
-                <div class="lead">Datos Usuario</div>
+                <div class="lead" id="tituloForm">Datos Usuario</div>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -133,6 +133,7 @@
 <script>
     $(document).ready(function(){
         /* Selectores que se modificaran para gestionar usuarios */
+        var tituloForm = $('#tituloForm');
         var tablaUsuarios = $('#tablaUsuarios');
         var txtIdUsuario = $('#txtIdUsuario');
         var txtNombres = $('#txtNombres');
@@ -173,7 +174,7 @@
                 nuevoUsuario: {
                     text: 'Nuevo usuario',
                     icon: 'fa-plus',
-                    attributes:{title: 'NUEVO USUARIO'},
+                    attributes:{title: 'Nuevo usuario'},
                     event: function () { 
                         var datos;
                         datos = {
@@ -185,7 +186,8 @@
                             email: '',
                             contrasena: '',
                             idEstado: '2',
-                            idTitulo: ''
+                            idTitulo: '',
+                            title:'Nuevo USUARIO'
                         };
                         btnAgregar.show();
                         btnGuardar.hide();
@@ -265,7 +267,8 @@
                             email: row.email,
                             contrasena: '',
                             idEstado: row.estado_id,
-                            idTitulo: row.titulo_id
+                            idTitulo: row.titulo_id,
+                            title:'Editar USUARIO'
                         };
                         btnAgregar.hide();
                         btnGuardar.show();
@@ -281,7 +284,7 @@
                     }
                 },
                 formatter: function(value,row,index){
-                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarUsuario btn btn-sm"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarUsuario btn btn-sm"><i class="fas fa-trash text-danger"></i></a></div>';                
+                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarUsuario btn btn-sm" title="Editar usuario" ><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarUsuario btn btn-sm" title="Eliminar usuario"><i class="fas fa-trash text-danger"></i></a></div>';                
                     return btnOpciones;
                 }
             }]
@@ -306,6 +309,7 @@
         /* Funcion para abrir el formulario de usuarios */
         function formularioUsuario(datos){
             $('#errorValidacion').html('');
+            tituloForm.html(datos.title)
             txtIdUsuario.val(datos.idUsuario);
             txtNombres.val(datos.nombres);
             txtApPaterno.val(datos.apPaterno);
@@ -403,10 +407,10 @@
                 type:'POST',
                 url:"{{ url('/user') }}"+accion+datos.id,
                 data: datos,
-                success: function(msg){
-                    if(msg){
+                success: function(sucess){
+                    if(sucess){
                         modificarUsuarios.modal('hide');
-                        $.alert('Realizado exitosamente!');
+                        $.alert('Cambios guardados con éxito!');
                         tablaUsuarios.bootstrapTable('refresh');
                         $('#errorValidacion').html('');              
                     }

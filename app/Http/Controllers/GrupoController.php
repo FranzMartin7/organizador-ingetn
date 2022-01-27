@@ -61,6 +61,7 @@ class GrupoController extends Controller
             grupos.*
             ")
         ->orderBy('materias.nombreMat','asc')
+        ->orderBy('grupo','asc')
         ->get();
         return response()->json($grupos);
     }

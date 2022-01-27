@@ -18,7 +18,7 @@ class HorarioController extends Controller
             'dia'=> 'required',
             'aula'=> 'required',
             'hora_inicio'=> 'required',
-            'hora_final'=> 'required',
+            'hora_final'=> 'required|after:hora_inicio',
             'generado'=> 'required'
         ]);
         switch ($request->periodo) {
@@ -93,7 +93,7 @@ class HorarioController extends Controller
             'dia'=> 'required',
             'aula'=> 'required',
             'hora_inicio'=> 'required',
-            'hora_final'=> 'required',
+            'hora_final'=> 'required|after:hora_inicio',
             'generado'=> 'required'
         ]);
         $respuesta = Horario::create([
@@ -198,7 +198,7 @@ class HorarioController extends Controller
             'dia'=> 'required',
             'aula'=> 'required',
             'hora_inicio'=> 'required',
-            'hora_final'=> 'required',
+            'hora_final'=> 'required|after:hora_inicio',
             'generado'=> 'required'
         ]);
         $respuesta = Horario::find($request->id);

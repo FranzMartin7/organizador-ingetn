@@ -216,7 +216,7 @@
         var idActividad = $('#idActividad');
         var filtros = $('#idAsignatura,#idAula,#idPeriodo,#gestion');
         var clockpicker = $('.clockpicker');
-    /* Variables para el modal de vista de eventos */
+        /* Variables para el modal de vista de eventos */
         var encabezadoEvento = $('#encabezadoEvento');
         var pieEvento = $('#pieEvento');
         var modificarMateria = $('#modificarMateria');
@@ -391,7 +391,7 @@
                     idAcontecimiento: 2,
                     fecha: moment(info.date).format("YYYY-MM-DD"),
                     horaInicio:  moment(info.date).format("HH:mm"),
-                    horaFinal: '',
+                    horaFinal: moment(info.date).add(90,'m').format("HH:mm"),
                     idActividad: '',
                     idAula: idAula.val(),
                     descripcion:'',
@@ -422,6 +422,7 @@
                     idPeriodo: info.event.extendedProps.idPeriodo,
                     gestion: info.event.extendedProps.gestion,
                     filtrado: info.event.extendedProps.filtrado,
+                    sigla: info.event.title,
                     modo: 'edicion'
                 }
                 formularioEvento(datos);
@@ -520,7 +521,7 @@
                     txtIdEvento.val(datos.idEvento); 
                     encabezadoEvento.prop("style","background-color:"+datos.colorMateria+";");
                     pieEvento.prop("style","background-color:"+datos.colorMateria+";");
-                    modificarMateria.html(datos.nombreMateria);
+                    modificarMateria.html(datos.nombreMateria+' ('+datos.sigla+')');
                     modificarGrupo.html("Grupo " +datos.grupo + " - ");
                     modificarGrupo.append('<span class="font-italic">' + datos.nombreDocente + '</span>')
                     btnAgregar.hide();
@@ -555,6 +556,9 @@
                 case 'nuevo':
                     modificarGrupo.html("");
                     txtIdEvento.val('');
+                    tipoAcont.html('Evento único');
+                    tipoAcont.removeClass('alert-danger');
+                    tipoAcont.addClass('alert-success');
                     $.ajax({
                         type:'POST',
                         url:"/asignatura/datosAsignatura",
@@ -566,12 +570,12 @@
                         success: function(respuesta){
                             encabezadoEvento.prop("style","background-color:"+respuesta.color+";");
                             pieEvento.prop("style","background-color:"+respuesta.color+";");
-                            modificarMateria.html(respuesta.nombreMat);
+                            modificarMateria.html(respuesta.nombreMat+' ('+respuesta.sigla+')');
                             modificarGrupo.html("Grupo " +respuesta.grupo + " - ");
                             modificarGrupo.append('<span class="font-italic">' + respuesta.docAbrev + '</span>');         
                         },
                         error: function(){
-                            alert("Hay un error...");
+                            $.alert("Hay un error al obtener los datos de la materia");
                         }
                     });
                     btnAgregar.show();

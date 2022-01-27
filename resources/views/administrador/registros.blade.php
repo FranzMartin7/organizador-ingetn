@@ -40,7 +40,7 @@
     <div class="modal-content">
     <div class="modal-header bg-primary">
         <div class="modal-title text-white">
-        <div class="lead">DATOS REGISTROS</div>
+        <div class="lead" id="tituloForm"></div>
         </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -128,6 +128,7 @@
 <script>
     $(document).ready(function(){
         /* Selectores que se modificaran para gestionar registros */
+        var tituloForm = $('#tituloForm');
         var idPeriodo = $('#idPeriodo');
         var gestion = $('#gestion');
         var generadores = $('#idPeriodo,#gestion');
@@ -179,7 +180,7 @@
                 nuevoRegistro: {
                     text: 'Nuevo registro',
                     icon: 'fa-plus',
-                    attributes:{title: 'NUEVO REGISTRO'},
+                    attributes:{title: 'Nuevo registro'},
                     event: function () { 
                         var datos;
                         datos = {
@@ -188,7 +189,7 @@
                             idPeriodo: idPeriodo.val(),
                             gestion: gestion.val(),
                             idGrupo: '',
-                            modo: 'nuevo'
+                            title: 'Nuevo REGISTRO'
                         };
                         btnAgregar.show();
                         btnGuardar.hide();
@@ -246,7 +247,7 @@
                             idPeriodo: row.periodo_id,
                             gestion: row.gestion,
                             idGrupo: row.idGrupo,
-                            modo: 'edicion'
+                            title:'Editar REGISTRO'
                         };
                         /* gruposMateria(datos.sigla,txtGrupoRegistro) */
                         btnAgregar.hide();
@@ -298,6 +299,7 @@
         /* Funcion para abrir el formulario de materias */
         function formularioRegistro(datos){
             $('#errorValidacion').html('');
+            tituloForm.html(datos.title)
             txtIdRegistro.val(datos.idRegistro);
             txtIdUsuario.val(datos.idUsuario); 
             txtIdUsuario.selectpicker('refresh');  
@@ -395,6 +397,7 @@
                 success: function(msg){
                     if(msg){
                         modificarRegistros.modal('hide');
+                        $.alert('Cambios guardados con éxito!');
                         tablaRegistros.bootstrapTable('refresh');              
                     }
                 },

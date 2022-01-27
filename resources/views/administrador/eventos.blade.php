@@ -345,7 +345,6 @@
                     let descripcion = document.createElement('div');
                     switch (arg.view.type) {
                         case 'dayGridMonth':
-        
                             break;
                         case 'timeGridWeek':
                             horaGrupo.innerHTML = "<div class='d-flex justify-content-between intlin-1'><span>"+moment(arg.event.start).format('H:mm')+" - "+moment(arg.event.end).format('H:mm')+"</span><span>"+arg.event.extendedProps.grupo+"</span></div>";
@@ -417,7 +416,7 @@
             dateClick: function(info) {
                 datos = {
                     colorMateria: '#343A40',
-                    nombreMateria: 'NUEVO EVENTO', 
+                    nombreMateria: 'Nuevo EVENTO', 
                     grupo: '',
                     nombreDocente: '',
                     idAsignatura: '',
@@ -425,7 +424,7 @@
                     idAcontecimiento: 2,
                     fecha: moment(info.date).format("YYYY-MM-DD"),
                     horaInicio:  moment(info.date).format("HH:mm"),
-                    horaFinal: '',
+                    horaFinal: moment(info.date).add(90,'m').format("HH:mm"),
                     idActividad: idActividad.val(),
                     idAula: idAula.val(),
                     descripcion:'',

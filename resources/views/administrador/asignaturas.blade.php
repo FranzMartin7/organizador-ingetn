@@ -21,7 +21,7 @@
         <div class="modal-content">
         <div class="modal-header bg-primary">
             <div class="modal-title text-white">
-            <div class="lead">DATOS ASIGNATURA</div>
+            <div class="lead" id="tituloForm"></div>
             </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -136,6 +136,7 @@
 <script>
     $(document).ready(function(){
         /* Selectores que se modificaran para gestionar registros */
+        var tituloForm = $('#tituloForm');
         var btnAsignaturas = $('#btnAsignaturas');
         var tablaAsignaturas = $('#tablaAsignaturas');
         var datosAsignatura;
@@ -174,18 +175,18 @@
                 nuevaAsignatura: {
                     text: 'Nueva asignatura',
                     icon: 'fa-plus',
-                    attributes:{title: 'NUEVA ASIGNATURA'},
+                    attributes:{title: 'Nueva asignatura'},
                     event: function () { 
                         var datos;
                         datos = {
                             idAsignatura: '',
                             idUsuario: '',
                             idGrupo: '',
-                            grupo: '',
                             idActividad: '',
                             idDocencia:'',
                             carga:'',
-                            idEstado: '2'
+                            idEstado: '2',
+                            title:'Nueva ASIGNATURA'
                         };
                         btnAgregar.show();
                         btnGuardar.hide();
@@ -277,7 +278,8 @@
                             idActividad: row.actividade_id,
                             idDocencia:row.docencia_id,
                             carga: row.carga,
-                            idEstado: row.estado_id
+                            idEstado: row.estado_id,
+                            title:'Editar ASIGNATURA'
                         };
                         btnAgregar.hide();
                         btnGuardar.show();
@@ -293,7 +295,7 @@
                     }
                 },
                 formatter: function(value,row,index){
-                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarAsignatura btn btn-sm"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarAsignatura btn btn-sm"><i class="fas fa-trash text-danger"></i></a></div>';                
+                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarAsignatura btn btn-sm" title="Editar asignatura"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarAsignatura btn btn-sm" title="Eliminar asignatura"><i class="fas fa-trash text-danger"></i></a></div>';                
                     return btnOpciones;
                 }
             }]
@@ -316,6 +318,7 @@
         /* Funcion para abrir el formulario de asignaturas */
         function formularioAsignatura(datos){
             $('#errorValidacion').html('');
+            tituloForm.html(datos.title)
             txtIdAsignatura.val(datos.idAsignatura);
             txtIdUsuario.val(datos.idUsuario);
             txtIdGrupo.val(datos.idGrupo);
@@ -337,7 +340,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Crear asignatura',
-                content: '¿Confirma crear nueva asignatura ' + datosAsignatura.sigla + ' en el grupo ' + datosAsignatura.grupo + '?',
+                content: '¿Confirma crear nueva asignatura de la materia seleccionada?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -364,7 +367,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar asignatura',
-                content: '¿Confirma editar los datos de la asignatura ' + datosAsignatura.sigla + ' del grupo ' + datosAsignatura.grupo + '?',
+                content: '¿Confirma editar los datos de la asignatura?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'blue',
@@ -416,6 +419,7 @@
                 success: function(msg){
                     if(msg){
                         modificarAsignaturas.modal('hide');
+                        $.alert('Cambios guardados con éxito!');
                         tablaAsignaturas.bootstrapTable('refresh');
                     }  
                 },

@@ -17,11 +17,11 @@
 </div>
 <!-- Modal para detalles de los materias -->
 <div class="modal fade" id="modificarMaterias" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header bg-primary">
             <div class="modal-title text-white">
-                <div class="lead">Datos Materia</div>
+                <div class="lead" id="tituloForm"></div>
             </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -105,6 +105,7 @@
 <script>
 $(document).ready(function(){
     /* Selectores que se modificaran para gestionar materias */
+    var tituloForm = $('#tituloForm');
     var btnMaterias = $('#btnMaterias');
     var panelEventoHorario = $('#panelEventoHorario');
     var tablaMaterias = $('#tablaMaterias');
@@ -150,7 +151,7 @@ $(document).ready(function(){
             nuevaMateria: {
                 text: 'Nueva materia',
                 icon: 'fa-plus',
-                attributes:{title: 'NUEVA MATERIA'},
+                attributes:{title: 'Nueva materia'},
                 event: function () { 
                     var datos;
                     datos = {
@@ -159,7 +160,8 @@ $(document).ready(function(){
                         sigla: '',
                         idArea: '',
                         idEstado: '2',
-                        color: ''
+                        color: '',
+                        title:'Nueva MATERIA'
                     };
                     btnAgregar.show();
                     btnGuardar.hide();
@@ -180,7 +182,7 @@ $(document).ready(function(){
             field: 'sigla',
             title: 'Sigla',
             sortable: true,
-            visible: false
+            visible: true
         }, {
             field: 'area',
             title: 'Área',
@@ -220,7 +222,8 @@ $(document).ready(function(){
                         sigla: row.sigla,
                         idArea: row.area_id,
                         idEstado: row.estado_id,
-                        color: row.color
+                        color: row.color,
+                        title:'Editar MATERIA'
                     };
                     btnAgregar.hide();
                     btnGuardar.show();
@@ -236,7 +239,7 @@ $(document).ready(function(){
                 }
             },
             formatter: function(value,row,index){
-                var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarMateria btn btn-sm"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarMateria btn btn-sm"><i class="fas fa-trash text-danger"></i></a></div>';                
+                var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarMateria btn btn-sm" title="Editar materia"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarMateria btn btn-sm" title="Eliminar materia"><i class="fas fa-trash text-danger"></i></a></div>';                
                 return btnOpciones;
             }
         }]
@@ -259,6 +262,7 @@ $(document).ready(function(){
     /* Funcion para abrir el formulario de materias */
     function formularioMateria(datos){
         $('#errorValidacion').html('');
+        tituloForm.html(datos.title);
         txtIdMateria.val(datos.idMateria);
         txtNombre.val(datos.nombre);
         txtSigla.val(datos.sigla);
@@ -355,6 +359,7 @@ $(document).ready(function(){
             success: function(msg){
                 if(msg){
                     modificarMaterias.modal('hide');
+                    $.alert('Cambios guardados con éxito!');
                     tablaMaterias.bootstrapTable('refresh')
                     $('#errorValidacion').html('');;              
                 }

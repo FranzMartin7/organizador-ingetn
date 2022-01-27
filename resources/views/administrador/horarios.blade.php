@@ -356,15 +356,15 @@
             dateClick: function(info) {
                 datos = {          
                     colorMateria: '#343A40',
-                    nombreMateria: 'NUEVO HORARIO', 
+                    nombreMateria: 'Nuevo HORARIO', 
                     grupo: '',
                     nombreDocente: '',
                     idAsignatura: '',
                     idHorario: '',
                     dia: moment(info.date).format("E"),
-                    horaInicio: moment(info.date).format("H:mm"),
-                    horaFinal: '',
-                    idAula:'',
+                    horaInicio: moment(info.date).format("HH:mm"),
+                    horaFinal: moment(info.date).add(90,'m').format("HH:mm"),
+                    idAula:idAula.val(),
                     generado: 0,
                     idPeriodo: idPeriodo.val(),
                     gestion: gestion.val(),
@@ -512,6 +512,7 @@
                 hora_inicio: txtHoraInicio.val(),
                 hora_final: txtHoraFinal.val(),
                 aula: txtIdAula.val(),
+                actividade_id: txtIdActividad.val(),
                 generado: txtGenerado.val(),
                 periodo: txtIdPeriodo.val(),
                 gestion: txtGestion.val(),
@@ -601,7 +602,7 @@
     /* Eventos para agregar un nuevo dato */
         btnGenerar.on('click',function(e){
             e.preventDefault();
-            datosHorario = recolectarHorario('GET');
+            datosHorario = recolectarHorario('POST');
             datosHorario['actividade_id'] = txtIdActividad.val();
             datosHorario['generado'] = 1;
             $.confirm({
@@ -617,9 +618,8 @@
                     btnClass: 'btn-info',
                     action: function(){
                         $.ajax({
-                            /* type:'POST', */
+                            type:'POST',
                             url:"{{ url('/genEventos') }}",
-                            method:'POST',
                             data: datosHorario,
                             success: function(msg){
                                 if(msg){
@@ -629,7 +629,7 @@
                                 }
                             },
                             error: function(){
-                            $.alert('Hay un ERROR al guardar los cambios');
+                            $.alert('Hay un ERROR al generar los eventos');
                             }
                         });
                         
@@ -699,7 +699,7 @@
                     selector.selectpicker('refresh')
                 },
                 error: function(){
-                    alert("Hay un error al obtener la lista de materias del semestre seleccionado...");
+                    $.alert("Hay un error al obtener la lista de materias del semestre seleccionado");
                 }
             });
         }
@@ -724,7 +724,7 @@
                     selector.selectpicker('refresh');
                 },
                 error: function(){
-                alert("Hay un error al obtener la lista de materias del semestre seleccionado...");
+                    $.alert("Hay un error al obtener la lista de materias por grupos");
                 }
             });
         }

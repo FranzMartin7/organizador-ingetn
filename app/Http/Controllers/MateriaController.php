@@ -76,8 +76,8 @@ class MateriaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre'=> 'required',
-            'sigla'=> 'required|max:10',
+            'nombre'=> 'required|unique:materias,nombreMat',
+            'sigla'=> 'required|max:10|unique:materias,sigla',
             'area'=> 'required',
             'estado'=> 'required',
             'color'=> 'required|notIn:#000000'
@@ -132,8 +132,8 @@ class MateriaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombre'=> 'required',
-            'sigla'=> 'required|max:10',
+            'nombre'=> 'required|unique:materias,nombreMat,'.$request->id,
+            'sigla'=> 'required|max:10|unique:materias,sigla,'.$request->id,
             'area'=> 'required',
             'estado'=> 'required',
             'color'=> 'required|notIn:#000000'

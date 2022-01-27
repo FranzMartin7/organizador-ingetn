@@ -11,14 +11,14 @@
 <!-- Panel de tabla de programas -->
 <div class="row mt-2">
     <div class="col-8">
-        <div class="lead font-weight-bold">ADMINISTRACIÓN PROGRAMAS</div> 
+        <div class="lead font-weight-bold">ADMINISTRACIÓN MENCIONES</div> 
         </div>
     <div class="col-4">
         <div class="input-group">
             <div class="input-group-prepend">
-                <label class="input-group-text bg-primario font-weight-normal" for="idMencionProg">Mención</label>
+                <label class="input-group-text bg-primario font-weight-normal" for="idMencion">Mención</label>
             </div>
-            <select class="selectpicker form-control show-tick" id="idMencionProg" name="idMencionProg" aria-label="Small" aria-describedby="addonSemestre1" required>
+            <select class="selectpicker form-control show-tick" id="idMencion" name="idMencion" aria-label="Small" aria-describedby="addonidMencion" required>
                 @foreach($menciones as $valor)
                     <option value="{{ $valor->id }}" mencion="{{ $valor->mencion }}" >{{ $valor->mencion }}</option>
                 @endforeach
@@ -35,7 +35,7 @@
     <div class="modal-content">
     <div class="modal-header bg-primary">
         <div class="modal-title text-white">
-        <div class="lead">DATOS MENCIONES</div>
+        <div class="lead" id="tituloForm"></div>
         </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -43,7 +43,6 @@
     </div>
     <form method="post" action="#">
         <input type="hidden" name="txtIdPrograma" id="txtIdPrograma">
-        <input type="hidden" name="txtMencion" id="txtMencion">
         <div class="modal-body">
             <div class="text-danger" role="alert">
                 <ul id="errorValidacion" class="list-group-item-danger mb-1 mt-0">
@@ -102,12 +101,12 @@
 <script>
     $(document).ready(function(){
         /* Selectores que se modificaran para gestionar materias */
+        var tituloForm = $('#tituloForm');
         var tablaProgramas = $('#tablaProgramas');
-        var idMencionProg = $('#idMencionProg');
+        var idMencion = $('#idMencion');
         var datosPrograma;
         var txtIdPrograma = $('#txtIdPrograma');
         var txtIdMateria = $('#txtIdMateria');
-        var txtMencion = $('#txtMencion');
         var txtIdMencion = $('#txtIdMencion');    
         var txtIdSemestre=$('#txtIdSemestre');
         var btnAgregar = $('#btnAgregar');
@@ -115,7 +114,7 @@
         var modificarProgramas = $('#modificarProgramas');
         /* Estructurador de la tabla de programas */
         tablaProgramas.bootstrapTable({
-            url:"{{ url('/programa') }}"+"/"+idMencionProg.val(),
+            url:"{{ url('/programa') }}"+"/"+idMencion.val(),
             pagination: true,
             search: true,
             showRefresh: true,
@@ -139,16 +138,16 @@
                 nuevoPrograma: {
                     text: 'Nueva designación',
                     icon: 'fa-plus',
-                    attributes:{title: 'NUEVA DESIGNACIÓN'},
+                    attributes:{title: 'Nueva asignación'},
                     event: function () { 
                         var datos;
                         datos = {
                             idPrograma: '',
-                            idMencion: idMencionProg.val(),
+                            idMencion: idMencion.val(),
                             idMateria: '',
                             idSemestre: '',
-                            mencion: idMencionProg.attr('mencion'),
-                            listaMaterias: 'noMencion'
+                            listaMaterias: 'noMencion',
+                            title:'Nueva ASIGNACIÓN'
                         };
                         btnAgregar.show();
                         btnGuardar.hide();
@@ -169,7 +168,7 @@
                 field: 'sigla',
                 title: 'Sigla',
                 sortable: true,
-                visible: false
+                visible: true
             }, {
                 field: 'semestre',
                 title: 'Semestre',
@@ -192,8 +191,8 @@
                             idMencion: row.mencione_id,
                             idMateria: row.materia_id,
                             idSemestre: row.semestre_id,
-                            mencion: row.mencion,
-                            listaMaterias: 'siMencion'
+                            listaMaterias: 'siMencion',
+                            title:'Editar ASIGNACIÓN'
                         };
                         btnAgregar.hide();
                         btnGuardar.show();
@@ -210,22 +209,21 @@
                     }
                 },
                 formatter: function(value,row,index){
-                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarPrograma btn btn-sm"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarPrograma btn btn-sm"><i class="fas fa-trash text-danger"></i></a></div>';                
+                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarPrograma btn btn-sm" title="Editar asignación"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarPrograma btn btn-sm" title="Eliminar asignación"><i class="fas fa-trash text-danger"></i></a></div>';                
                     return btnOpciones;
                 }
             }]
         });
         /* Evento para actualizar la tabla cambiando el valor de la mencion */
-        idMencionProg.on('change',function () {
+        idMencion.on('change',function () {
             tablaProgramas.bootstrapTable('refreshOptions', {
-                url:"{{ url('/programa') }}"+"/"+idMencionProg.val(),
+                url:"{{ url('/programa') }}"+"/"+idMencion.val(),
             })
         })
         /* Funcion para recolectar datos del formulario de programas */
         function recolectarPrograma(method){
             datosPrograma = {
                 id: txtIdPrograma.val(),
-                mencion: txtMencion.val(),
                 mencione_id: txtIdMencion.val(),
                 materia: txtIdMateria.val(),
                 semestre: txtIdSemestre.val(),
@@ -236,6 +234,7 @@
         };
         /* Funcion para abrir el formulario de programas */
         function formularioPrograma(datos){
+            tituloForm.html(datos.title);
             $('#errorValidacion').html('');
             $.ajax({
                 type:'POST',
@@ -255,7 +254,6 @@
                     txtIdPrograma.val(datos.idPrograma)
                     txtIdMateria.val(datos.idMateria);
                     txtIdMencion.val(datos.idMencion);
-                    txtMencion.val(datos.mencion);
                     txtIdSemestre.val(datos.idSemestre);
                     txtIdMateria.selectpicker('refresh');
                     txtIdSemestre.selectpicker('refresh');
@@ -264,19 +262,19 @@
                     modificarProgramas.modal('show');               
                 },
                 error: function(){
-                    alert("Hay un error al obtener la lista de materias de la mención");
+                    $.alert("Hay un error al obtener la lista de materias de la mención");
                 }
             });
 
         }
-        /* Evento para designar mencion a nueva materia */
+        /* Evento para asignar mencion a nueva materia */
         btnAgregar.on('click',function(e){
             e.preventDefault();
             datosPrograma = recolectarPrograma('POST');        
             $.confirm({
                 icon: 'fas fa-plus-circle',
-                title: 'Designar materia a mención',
-                content: '¿Confirma designar ésta materia a la mención ' + datosPrograma.mencion + '?',
+                title: 'Asignar materia a mención',
+                content: '¿Confirma asignar ésta materia a la mención seleccionada?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -303,7 +301,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar materia de mención',
-                content: '¿Confirma editar datos de ésta materia de la mención ' + datosPrograma + '?',
+                content: '¿Confirma editar datos de ésta materia de la mención seleccionada?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'blue',
@@ -328,7 +326,7 @@
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
                 title: '¿Eliminar materia de mención?',
-                content: 'Recuerde que una vez eliminado ésta materia de la mención ' + datos.mencion + ' no se puede recuperar sus datos.',
+                content: 'Recuerde que una vez eliminado ésta materia de la mención seleccionada no se puede recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {
@@ -355,6 +353,7 @@
                 success: function(msg){
                     if(msg){
                         modificarProgramas.modal('hide');
+                        $.alert('Cambios guardados con éxito!');
                         tablaProgramas.bootstrapTable('refresh');
                         $('#errorValidacion').html('');              
                     }
