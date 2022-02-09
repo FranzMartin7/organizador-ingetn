@@ -372,6 +372,8 @@
                         var datos;
                         datos = {
                             idAsignatura: idAsignatura.val(),
+                            idPeriodo: idPeriodo.val(),
+                            gestion: gestion.val(),
                             '_token': $("meta[name='csrf-token']").attr("content")
                         };
                         return datos;

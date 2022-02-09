@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ 'Hor_'.$aulaAbrev.'_'.$periodo.'_'.$gestion }}</title>
+    <title>{{ 'HORARIOS '.$aulaAbrev.' '.$periodo.'-'.$gestion }}</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('fullcalendar5/lib/main.css') }}"/>
     <link rel="stylesheet" href="{{ asset('fullcalendar5/daygrid/main.css') }}"/>
@@ -79,7 +79,7 @@
             </div>
         </div> 
         <div id="calendarioVista" class="pb-0"></div>
-        <p class="align-top small my-0">(c) 2021 - Sistema Organizador, Ingeniería Electrónica UMSA</p> 
+        <p class="align-top small my-0">© 2021 (FmCr) - Sistema Organizador, Ingeniería Electrónica UMSA</p> 
     </div>
     <script src="{{ asset('vendor/jquery/jquery.js') }}"></script> 
     <script src="{{ asset('vendor/popper/popper.js') }}"></script> 
@@ -140,10 +140,10 @@
                         let docente = document.createElement('div');
                         let actividad = document.createElement('div');
                         let descripcion = document.createElement('div');
-                        horaGrupo.innerHTML = "<div class='d-flex justify-content-between font-weight-bold' style='line-height: 100%;'><span>"+moment(arg.event.start).format('H:mm')+" - "+moment(arg.event.end).format('H:mm')+"</span><span>"+arg.event.extendedProps.grupo+"</span></div>";
-                        docente.innerHTML = "<div class='text-center font-italic font-weight-bold' style='line-height: 110%;'>"+arg.event.extendedProps.docAbrev+"</div>";
-                        actividad.innerHTML = "<div class='text-center font-weight-bold' style='line-height: 110%;'>"+arg.event.extendedProps.aulaAbrev+"</div>";
-                        sigla.innerHTML = "<div class='text-center lead font-weight-bold' style='line-height: 110%;'>"+arg.event.title+"</div>"; 
+                        horaGrupo.innerHTML = "<div class='d-flex justify-content-between font-weight-bold intlin-1'><span>"+moment(arg.event.start).format('H:mm')+" - "+moment(arg.event.end).format('H:mm')+"</span><span>"+arg.event.extendedProps.grupo+"</span></div>";
+                        docente.innerHTML = "<div class='text-center font-italic font-weight-bold intlin-2'>"+arg.event.extendedProps.docAbrev+"</div>";
+                        actividad.innerHTML = "<div class='text-center font-weight-bold intlin-2'>"+arg.event.extendedProps.aulaAbrev+"</div>";
+                        sigla.innerHTML = "<div class='text-center lead font-weight-bold intlin-2'>"+arg.event.title+"</div>"; 
                         return { domNodes: [ horaGrupo,sigla,docente,actividad ] }              
                     } else {
                         return false;

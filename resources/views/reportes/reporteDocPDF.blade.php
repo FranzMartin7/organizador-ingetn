@@ -109,9 +109,8 @@
                 &nbsp;
             </div>           
         </div>
-
     </div>
-    <p class="align-top small my-0" style="position: fixed; bottom: -50px; left: 0px; right: 0px; height: 50px; line-height: 35px;">(c) 2021 - Sistema Organizador, Ingeniería Electrónica UMSA</p>
+    <p class="align-top small my-0" style="position: fixed; bottom: -50px; left: 0px; right: 0px; height: 50px; line-height: 35px;">© 2021 (FmCr) - Sistema Organizador, Ingeniería Electrónica UMSA</p>
     <script src="{{ public_path('js/bootstrap.js') }}"></script>
 </body>
 </html>

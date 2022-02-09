@@ -84,6 +84,7 @@ class ReportesController extends Controller
         $idActividad = $request->idActividad;
         $periodo = Periodo::find($idPeriodo)->periodoAbrev;
         $mencion = Mencione::find($idMencion)->mencion;
+        $mencionAbrev = Mencione::find($idMencion)->mencionAbrev;
         $semestre = Semestre::find($idSemestre)->semestre;
         if (empty($idActividad)) {
             $actividad = $idActividad;
@@ -92,7 +93,7 @@ class ReportesController extends Controller
         }
         $idUsuario = $request->user()->id;
         $usuarios = User::find($idUsuario);
-        return View::make('reportes.horariosSemestrePDF',['idActividad'=>$idActividad,'actividad'=>$actividad,'idColor'=>$idColor,'semestre'=>$semestre,'idMencion'=>$idMencion,'mencion'=>$mencion,'periodo'=>$periodo,'idSemestre'=>$idSemestre,'gestion'=>$gestion,'idPeriodo'=>$idPeriodo,'usuarios'=>$usuarios]);
+        return View::make('reportes.horariosSemestrePDF',['idActividad'=>$idActividad,'actividad'=>$actividad,'idColor'=>$idColor,'semestre'=>$semestre,'idMencion'=>$idMencion,'mencion'=>$mencion,'mencionAbrev'=>$mencionAbrev,'periodo'=>$periodo,'idSemestre'=>$idSemestre,'gestion'=>$gestion,'idPeriodo'=>$idPeriodo,'usuarios'=>$usuarios]);
     }
     public function horariosAula(Request $request)
     {

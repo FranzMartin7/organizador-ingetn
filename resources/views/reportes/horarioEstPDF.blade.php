@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horarios{{ '_'.$periodo.'_'.$gestion }}</title>
+    <title>{{ 'HORARIOS '.$periodo.'-'.$gestion }}</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('fullcalendar5/lib/main.css') }}"/>
     <link rel="stylesheet" href="{{ asset('fullcalendar5/daygrid/main.css') }}"/>
@@ -72,7 +72,7 @@
             </div>
         </div> 
         <div id="calendarioImp" class="pb-0"></div>
-        <p class="align-top small my-0">(c) 2021 - Sistema Organizador, Ingeniería Electrónica UMSA</p>
+        <p class="align-top small my-0">© 2021 (FmCr) - Sistema Organizador, Ingeniería Electrónica UMSA</p>
     </div>
     <script src="{{ asset('vendor/jquery/jquery.js') }}"></script> 
     <script src="{{ asset('vendor/popper/popper.js') }}"></script> 
@@ -126,7 +126,7 @@
                         let actividad = document.createElement('div');
                         let descripcion = document.createElement('div');
                         horaGrupo.innerHTML = "<div class='d-flex justify-content-between font-weight-bold intlin-1'><span>"+moment(arg.event.start).format('H:mm')+" - "+moment(arg.event.end).format('H:mm')+"</span><span>"+arg.event.extendedProps.grupo+"</span></div>";
-                        docente.innerHTML = "<div class='text-center font-weight-bold intlin-2'>"+arg.event.extendedProps.docAbrev+"</div>";
+                        docente.innerHTML = "<div class='text-center font-weight-bold font-italic intlin-2'>"+arg.event.extendedProps.docAbrev+"</div>";
                         actividad.innerHTML = "<div class='text-center font-weight-bold intlin-2'>"+arg.event.extendedProps.aulaAbrev+"</div>";
                         sigla.innerHTML = "<div class='text-center lead font-weight-bold intlin-2'>"+arg.event.title+"</div>"; 
                         return { domNodes: [ horaGrupo,sigla,docente,actividad ] }              
