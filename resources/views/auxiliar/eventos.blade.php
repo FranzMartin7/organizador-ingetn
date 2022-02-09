@@ -392,6 +392,8 @@
                         var datos;
                         datos = {
                             idAsignatura: idAsignatura.val(),
+                            idPeriodo: idPeriodo.val(),
+                            gestion: gestion.val(),
                             '_token': $("meta[name='csrf-token']").attr("content")
                         };
                         return datos;
@@ -411,7 +413,7 @@
                     idAcontecimiento: 2,
                     fecha: moment(info.date).format("YYYY-MM-DD"),
                     horaInicio:  moment(info.date).format("HH:mm"),
-                    horaFinal: '',
+                    horaFinal: moment(info.date).add(90,'m').format("HH:mm"),
                     idActividad: '',
                     idAula: idAula.val(),
                     descripcion:'',
@@ -442,6 +444,7 @@
                     idPeriodo: info.event.extendedProps.idPeriodo,
                     gestion: info.event.extendedProps.gestion,
                     filtrado: info.event.extendedProps.filtrado,
+                    sigla: info.event.title,
                     modo: 'edicion'
                 }
                 formularioEvento(datos);
@@ -540,7 +543,7 @@
                     txtIdEvento.val(datos.idEvento); 
                     encabezadoEvento.prop("style","background-color:"+datos.colorMateria+";");
                     pieEvento.prop("style","background-color:"+datos.colorMateria+";");
-                    modificarMateria.html(datos.nombreMateria);
+                    modificarMateria.html(datos.nombreMateria+' ('+datos.sigla+')');
                     modificarGrupo.html("Grupo " +datos.grupo + " - ");
                     modificarGrupo.append('<span class="font-italic">' + datos.nombreDocente + '</span>')
                     btnAgregar.hide();
@@ -586,12 +589,12 @@
                         success: function(respuesta){
                             encabezadoEvento.prop("style","background-color:"+respuesta.color+";");
                             pieEvento.prop("style","background-color:"+respuesta.color+";");
-                            modificarMateria.html(respuesta.nombreMat);
+                            modificarMateria.html(respuesta.nombreMat+' ('+respuesta.sigla+')');
                             modificarGrupo.html("Grupo " +respuesta.grupo + " - ");
                             modificarGrupo.append('<span class="font-italic">' + respuesta.docAbrev + '</span>');         
                         },
                         error: function(){
-                            $.alert("Hay un error...");
+                            $.alert("Hay un error al obtener los datos de la materia");
                         }
                     });
                     btnAgregar.show();

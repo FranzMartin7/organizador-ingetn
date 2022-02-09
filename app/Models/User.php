@@ -83,10 +83,6 @@ class User extends Authenticatable
     public function niveles(){ //obsoleto
         return $this->belongsTo(Nivele::class,'nivele_id','id');
     } 
-/*     public function sessions(){
-        return $this->belongsTo(Session::class,'id','user_id');
-    } */
-
     public function adminlte_image(){
         return auth()->user()->profile_photo_url;
     }

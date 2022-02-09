@@ -27,13 +27,13 @@ class Asignatura extends Model
     public function docencias(){
         return $this->belongsTo(Docencia::class,'docencia_id','id');
     }
-    public function materias(){ //obsoleto
-        return $this->belongsTo(Materia::class,'materia_id');
-    }
     public function grupos(){
         return $this->belongsTo(Grupo::class,'grupo_id');
     }
     public function eventos(){
-        return $this->hasMany(Evento::class,'asignatura_id');
-    }   
+        return $this->hasMany(Evento::class,'id','asignatura_id');
+    }
+    public function horarios(){
+        return $this->hasMany(Horario::class,'id','asignatura_id');
+    }    
 }

@@ -144,12 +144,13 @@
                 visible: true
             }, {
                 field: 'descripcion',
-                title: 'Descripción',
+                title: 'Actividad desarrollada',
                 sortable: true,
             },  {
                 field: 'enlace',
                 title: 'Enlace',
                 sortable: true,
+                visible: false
             }, {
                 field: 'aula',
                 title: 'Aula',

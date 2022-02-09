@@ -35,9 +35,9 @@
         <div class="col-12 col-sm-5">
             <div class="input-group mb-1">
                 <div class="input-group-prepend">
-                    <label for="idGrupo" class="input-group-text bg-primario font-weight-normal" id="addonIdGrupo">Asignaturas</label>
+                    <label for="idGrupo" class="input-group-text bg-primario font-weight-normal" id="addonIdGrupo">Materias</label>
                 </div>
-                <select name='idGrupo' id='idGrupo' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdGrupo" data-max-options="15" title="Elegir asignaturas" multiple data-selected-text-format="count>3" data-header="Selecciona asignaturas" data-live-search="true" required>
+                <select name='idGrupo' id='idGrupo' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdGrupo" data-max-options="15" title="Elegir materias" multiple data-selected-text-format="count>3" data-header="Eligir materias" data-live-search="true" required>
                 @foreach($semestres as $valorSemestre)
                     <optgroup label="{{ $valorSemestre->semestre }}">
                     @foreach($grupos as $valor)
@@ -257,6 +257,7 @@
             e.preventDefault();
             idGrupoStr.val(idGrupo.val().toString());
             asignaturasPorEstudiante(idGrupo,idPeriodo.val(),gestion.val())
+            /* calendar.refetchEvents(); */
         });
         btnLimpiar.on('click',function(e){
             e.preventDefault();
@@ -307,10 +308,10 @@
                     })
                     selector.selectpicker('val',respuesta);
                     selector.selectpicker('refresh');
-                    /* calendar.refetchEvents(); */
+                    calendar.refetchEvents();
                 },
                 error: function(){
-                    alert("Hay un error al obtener las materias por semestre...");
+                    $.alert("Hay un error al obtener las materias del estudiante");
                 }
             });
         }

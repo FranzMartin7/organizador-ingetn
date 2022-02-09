@@ -41,7 +41,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <div class="modal-title text-white">
-                    <div class="lead">MATERIAS INSCRITAS</div>
+                    <div class="lead" id="tituloForm"></div>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -120,6 +120,7 @@
 <script>
     $(document).ready(function(){
         /* Selectores que se modificaran para gestionar registros */
+        var tituloForm = $('#tituloForm');
         var idUsuario = $('#idUsuario');
         var idPeriodo = $('#idPeriodo');
         var gestion = $('#gestion');
@@ -177,7 +178,7 @@
                 nuevoRegistro: {
                     text: 'Nuevo registro',
                     icon: 'fa-plus',
-                    attributes:{title: 'NUEVO REGISTRO'},
+                    attributes:{title: 'Nuevo registro'},
                     event: function () { 
                         var datos;
                         datos = {
@@ -186,7 +187,7 @@
                             idPeriodo: idPeriodo.val(),
                             gestion: gestion.val(),
                             idGrupo: '',
-                            modo: 'nuevo'
+                            title: 'Nuevo REGISTRO'
                         };
                         /* gruposMateria(datos.sigla,txtGrupoRegistro) */
                         btnAgregarRegistro.show();
@@ -251,7 +252,7 @@
                             idPeriodo: row.periodo_id,
                             gestion: row.gestion,
                             idGrupo: row.idGrupo,
-                            modo: 'edicion'
+                            title: 'Editar REGISTRO'
                         };
                         /* gruposMateria(datos.sigla,txtGrupoRegistro) */
                         btnAgregarRegistro.hide();
@@ -268,7 +269,7 @@
                     }
                 },
                 formatter: function(value,row,index){
-                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarRegistro btn btn-sm"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarRegistro btn btn-sm"><i class="fas fa-trash text-danger"></i></a></div>';                
+                    var btnOpciones = '<div class="btn-group" data-toggle="buttons"><a href="#" class="editarRegistro btn btn-sm" title="Editar registro"><i class="fas fa-edit text-primary"></i></a><a href="#" class="eliminarRegistro btn btn-sm" title="Eliminar registro"><i class="fas fa-trash text-danger"></i></a></div>';                
                     return btnOpciones;
                 }
             }]
@@ -306,6 +307,7 @@
         /* Funcion para abrir el formulario de materias */
         function formularioRegistro(datos){
             $('#errorValidacion').html('');
+            tituloForm.html(datos.title);
             txtIdRegistro.val(datos.idRegistro);
             txtIdUsuario.val(datos.idUsuario); 
             txtIdPeriodo.val(datos.idPeriodo);

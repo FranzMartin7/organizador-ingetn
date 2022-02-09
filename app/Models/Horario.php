@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Models;
 
@@ -19,4 +19,13 @@ class Horario extends Model
         'periodo_id',
         'gestion'
     ];
+    public function asignaturas(){
+        return $this->belongsTo(Asignatura::class,'asignatura_id','id');
+    }
+    public function aulas(){
+        return $this->belongsTo(Aula::class,'aula_id','id');
+    }
+    public function periodos(){
+        return $this->belongsTo(Periodo::class,'periodo_id','id');
+    }
 }

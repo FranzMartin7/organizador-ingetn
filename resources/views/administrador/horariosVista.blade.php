@@ -524,7 +524,7 @@
         /* Establecimiento de propiedades del carusell */
         carouselHorarios.carousel(
             {
-                interval: 15000,
+                interval: 20000,
                 keyboard: true,
                 touch: true
             }

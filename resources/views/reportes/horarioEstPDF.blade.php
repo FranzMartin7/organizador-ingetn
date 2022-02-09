@@ -125,10 +125,10 @@
                         let docente = document.createElement('div');
                         let actividad = document.createElement('div');
                         let descripcion = document.createElement('div');
-                        horaGrupo.innerHTML = "<div class='d-flex justify-content-between' style='line-height: 100%;'><span>"+moment(arg.event.start).format('H:mm')+" - "+moment(arg.event.end).format('H:mm')+"</span><span>"+arg.event.extendedProps.grupo+"</span></div>";
-                        docente.innerHTML = "<div class='text-center font-italic' style='line-height: 110%;'>"+arg.event.extendedProps.docAbrev+"</div>";
-                        actividad.innerHTML = "<div class='text-center' style='line-height: 110%;'>"+arg.event.extendedProps.aulaAbrev+"</div>";
-                        sigla.innerHTML = "<div class='text-center lead' style='line-height: 110%;'>"+arg.event.title+"</div>"; 
+                        horaGrupo.innerHTML = "<div class='d-flex justify-content-between font-weight-bold intlin-1'><span>"+moment(arg.event.start).format('H:mm')+" - "+moment(arg.event.end).format('H:mm')+"</span><span>"+arg.event.extendedProps.grupo+"</span></div>";
+                        docente.innerHTML = "<div class='text-center font-weight-bold intlin-2'>"+arg.event.extendedProps.docAbrev+"</div>";
+                        actividad.innerHTML = "<div class='text-center font-weight-bold intlin-2'>"+arg.event.extendedProps.aulaAbrev+"</div>";
+                        sigla.innerHTML = "<div class='text-center lead font-weight-bold intlin-2'>"+arg.event.title+"</div>"; 
                         return { domNodes: [ horaGrupo,sigla,docente,actividad ] }              
                     } else {
                         return false;

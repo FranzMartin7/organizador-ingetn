@@ -459,41 +459,6 @@ class MostrarEventos extends Controller
         }
         return response()->json($horarios->get()->toArray());
     }
-/*     public function horariosImp(Request $request){
-        $horarios = Programa::join('materias','materias.id','programas.materia_id')
-        ->join('asignaturas','asignaturas.materia_id','materias.id')
-        ->join('users','users.id','asignaturas.user_id')
-        ->join('horarios','horarios.asignatura_id','asignaturas.id')
-        ->join('aulas','aulas.id','horarios.aula_id')
-        ->join('actividades','actividades.id','asignaturas.actividade_id')
-        ->join('titulos','titulos.id','users.titulo_id')
-        ->join('periodos','periodos.id','horarios.periodo_id')
-        ->where('horarios.periodo_id', $request->idPeriodo)
-        ->where('horarios.gestion', $request->gestion)
-        ->whereIn('horarios.asignatura_id',explode(",", $request->idAsignatura))
-        ->selectRaw("distinct materias.sigla as title,
-            horarios.horaInicio as startTime,
-            horarios.horaFinal as endTime,
-            horarios.id as idHorario,
-            horarios.id as groupId,
-            concat('[',horarios.dia,']') as daysOfWeek,
-            horarios.dia,
-            asignaturas.actividade_id as idActividad,
-            horarios.asignatura_id as idAsignatura,
-            horarios.aula_id as idAula,
-            horarios.generado,
-            horarios.periodo_id as idPeriodo, 
-            horarios.gestion,        
-            asignaturas.grupo,
-            materias.nombreMat,
-            aulas.aulaAbrev,
-            aulas.aula,
-            periodos.periodoAbrev,
-            actividades.actividad,
-            concat(titulos.tituloAbrev,' ',users.apPaterno) as docAbrev")
-        ->get();
-        return response()->json($horarios);
-    } */
     public function eventosAula(Request $request){
         $eventos = Asignatura::join('grupos','grupos.id','asignaturas.grupo_id')
         ->join('materias','materias.id','grupos.materia_id')
@@ -524,6 +489,8 @@ class MostrarEventos extends Controller
         ->join('eventos','eventos.asignatura_id','asignaturas.id')
         ->whereIn('programas.semestre_id', $idSemestre)
         ->where('asignaturas.id','<>',$request->idAsignatura)
+        ->where('eventos.periodo_id', $request->idPeriodo)
+        ->where('eventos.gestion', $request->gestion)   
         ->where('asignaturas.estado_id', 2)
         ->where('materias.estado_id', 2)
         ->selectRaw("materias.sigla as title,

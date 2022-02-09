@@ -89,7 +89,7 @@ class RegistroController extends Controller
     {
         $request->validate([
             'nombre'=> 'required',
-            'materia'=> 'required',
+            'materia'=> 'required|unique:registros,grupo_id,null,id,periodo_id,'.$request->periodo.',gestion,'.$request->gestion,
             'periodo'=> 'required',
             'gestion'=> 'required'
         ]);
@@ -158,7 +158,7 @@ class RegistroController extends Controller
     {
         $request->validate([
             'nombre'=> 'required',
-            'materia'=> 'required',
+            'materia'=> 'required|unique:registros,grupo_id,'.$request->id.',id,periodo_id,'.$request->periodo.',gestion,'.$request->gestion,
             'periodo'=> 'required',
             'gestion'=> 'required'
         ]);
