@@ -168,6 +168,48 @@ class MostrarEventos extends Controller
         }       
         return response()->json($resultado);
     }
+    public function eventosAuxiliar(Request $request){
+        $idUsuario = $request->user()->id;
+        $asignatura = Asignatura::find($request->idAsignatura);
+        $idNivel = $request->user()->nivele_id;
+        $eventos = User::join('asignaturas','asignaturas.user_id','users.id')
+        ->join('grupos','grupos.id','asignaturas.grupo_id')
+        ->join('materias','materias.id','grupos.materia_id')
+        ->join('eventos','eventos.asignatura_id','asignaturas.id')
+        ->join('aulas','aulas.id','eventos.aula_id')
+        ->join('actividades','actividades.id','eventos.actividade_id')
+        ->join('titulos','titulos.id','users.titulo_id')
+        ->join('periodos','periodos.id','eventos.periodo_id')
+        ->where('asignaturas.grupo_id',$asignatura->grupo_id)
+        ->where('asignaturas.docencia_id',$asignatura->docencia_id)
+        ->where('asignaturas.actividade_id',3) 
+        ->where('eventos.periodo_id',$request->idPeriodo)
+        ->where('eventos.gestion',$request->gestion)
+        ->where('asignaturas.estado_id',2) 
+        ->where('materias.estado_id',2) 
+        ->selectRaw("materias.sigla as title,
+            concat(eventos.fecha,'T',eventos.horaInicio) as start,
+            concat(eventos.fecha,'T',eventos.horaFinal) as end,
+            eventos.id as idEvento,
+            eventos.acontecimiento_id as idAcontecimiento,
+            eventos.actividade_id as idActividad,
+            eventos.asignatura_id as idAsignatura,
+            eventos.descripcion,
+            eventos.enlace,
+            eventos.aula_id as idAula,      
+            eventos.periodo_id as idPeriodo, 
+            eventos.gestion, 
+            grupos.grupo,
+            materias.nombreMat,
+            aulas.aulaAbrev,
+            aulas.aula,
+            actividades.actividad,
+            periodos.periodoAbrev,
+            'false' as filtrado,
+            concat(titulos.tituloAbrev,' ',users.apPaterno) as docAbrev")
+        ->get()->toArray();      
+        return response()->json($eventos);
+    }
     public function eventosReporte(Request $request){
         $idUsuario = $request->user()->id;
         $eventos = User::join('asignaturas','asignaturas.user_id','users.id')

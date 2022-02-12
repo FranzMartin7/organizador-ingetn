@@ -83,6 +83,7 @@ Route::get('/inicioEstudiante/horario','App\Http\Controllers\InicioController@es
 Route::get('/inicioEstudiante/registro','App\Http\Controllers\InicioController@estudianteRegistro')->name('estudiante.registro');
 
 Route::post('/evDocente','App\Http\Controllers\MostrarEventos@eventosDocente');
+Route::post('/evAuxiliar','App\Http\Controllers\MostrarEventos@eventosAuxiliar');
 Route::post('/evEstudiante','App\Http\Controllers\MostrarEventos@eventosEstudiante');
 Route::post('/evReporte','App\Http\Controllers\MostrarEventos@eventosReporte');
 Route::post('/genEventos','App\Http\Controllers\HorarioController@generarEventos');

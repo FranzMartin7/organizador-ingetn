@@ -380,7 +380,23 @@
                     },
                     color: 'cyan',
                     display: 'background'
-                }            
+                },
+                {
+                    url: "{{ url('/evAuxiliar') }}",
+                    method:'POST',
+                    extraParams: function() {
+                        var datos;
+                        datos = {
+                            idAsignatura: idAsignatura.val(),
+                            idPeriodo: idPeriodo.val(),
+                            gestion: gestion.val(),
+                            '_token': $("meta[name='csrf-token']").attr("content")
+                        };
+                        return datos;
+                    },
+                    color: 'orange',
+                    textColor: 'black'
+                }             
             ],
             dateClick: function(info) {
                 datos = {
@@ -551,7 +567,7 @@
                         txtIdPeriodo.attr("disabled",false);
                         txtGestion.attr("disabled",false);
                     }
-                    if (datos.filtrado) {
+                    if (datos.filtrado=='true') {
                         modificarEventos.modal();
                     }       
                     break;
