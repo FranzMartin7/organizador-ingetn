@@ -69,9 +69,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombres'=> 'required',
-            'apellido_paterno'=> 'required',
-            'apellido_materno'=> 'required',
+            'nombres' => 'required',
+            'apellido_paterno' => 'required',
+            'apellido_materno' => 'required',
+            'CI' => 'required|unique:users,numeroCI',
+            'RU' => 'nullable|unique:users,registroUniv',
             'nivel'=> 'required',
             'email'=> 'required|email|unique:users,email',
             'contraseña'=> 'required',
@@ -82,6 +84,8 @@ class UserController extends Controller
             'name'=>request('nombres'),
             'apPaterno'=>request('apellido_paterno'),
             'apMaterno'=>request('apellido_materno'),
+            'numeroCI'=>request('CI'),
+            'registroRU'=>request('RU'),
             'nivele_id'=>request('nivel'),
             'email'=>request('email'),
             'password'=>bcrypt(request('contraseña')),
@@ -141,9 +145,11 @@ class UserController extends Controller
             'nombres'=> 'required',
             'apellido_paterno'=> 'required',
             'apellido_materno'=> 'required',
+            'CI' => 'required|unique:users,numeroCI,'.$request->id,
+            'RU' => 'nullable|unique:users,registroUniv,'.$request->id,
             'nivel'=> 'required',
             'email'=> 'required|email|unique:users,email,'.$request->id,
-            /* 'contraseña'=> 'required', */
+            'contraseña'=> 'nullable',
             'estado'=> 'required',
             'titulo'=> 'required',
         ]);
@@ -153,6 +159,8 @@ class UserController extends Controller
         $respuesta->name = request('nombres');
         $respuesta->apPaterno = request('apellido_paterno');
         $respuesta->apMaterno = request('apellido_materno');
+        $respuesta->numeroCI = request('CI');
+        $respuesta->registroUniv = request('RU');
         $respuesta->nivele_id = request('nivel');
         $respuesta->estado_id = request('estado');
         $respuesta->titulo_id = request('titulo');

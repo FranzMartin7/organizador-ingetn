@@ -17,6 +17,7 @@ class CreatePeriodosTable extends Migration
             $table->id();
             $table->string('periodo')->nullable();
             $table->string('periodoAbrev')->nullable();
+            $table->timestamps();
         });
     }
 

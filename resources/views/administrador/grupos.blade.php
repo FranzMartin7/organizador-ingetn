@@ -192,6 +192,8 @@
                     'click .eliminarGrupo': function (e, value, row, index) {
                         datos = {
                             id: row.id,
+                            sigla: row.sigla,
+                            grupo: row.grupo,
                             '_token': $("meta[name='csrf-token']").attr("content"),
                             '_method': 'DELETE'
                         };
@@ -232,11 +234,12 @@
         /* Evento para agregar nueva materia */
         btnAgregar.on('click',function(e){
             e.preventDefault();
-            datosGrupo = recolectarGrupo('POST');      
+            datosGrupo = recolectarGrupo('POST');
+            datosGrupo.sigla = $('#txtIdMateria :selected').attr('title');   
             $.confirm({
                 icon: 'fas fa-plus-circle',
-                title: 'Crear materia',
-                content: '¿Confirma asignar el grupo ' + datosGrupo.grupo + ' a la materia  seleccionada?',
+                title: 'Crear grupo',
+                content: '¿Confirma crear el grupo ' + datosGrupo.grupo + ' en la materia  '+datosGrupo.sigla+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -262,8 +265,8 @@
             datosGrupo = recolectarGrupo('PATCH');  
             $.confirm({
                 icon: 'fas fa-edit',
-                title: 'Editar materia',
-                content: '¿Confirma editar datos de la materia ' + datosGrupo.sigla + '?',
+                title: 'Editar grupo',
+                content: '¿Confirma cambiar los datos a grupo '+datosGrupo.grupo+' y materia ' + datosGrupo.sigla + '?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'blue',
@@ -287,8 +290,8 @@
         function eliminarGrupo(datos){
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
-                title: '¿Eliminar materia?',
-                content: 'Recuerde que una vez eliminado el grupo de la materia no se puede recuperar sus datos.',
+                title: '¿Eliminar grupo?',
+                content: 'Recuerde que una vez eliminado el grupo '+datos.grupo+' de la materia '+datos.sigla+' no se podrá recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {
@@ -315,7 +318,52 @@
                 success: function(msg){
                     if(msg){
                         modificarMaterias.modal('hide');
-                        $.alert('Cambios guardados con éxito!');
+                        switch (datos['_method']) {
+                            case 'POST':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se creó el grupo '+datos.grupo+' en la materia '+datos.sigla,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-success',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'PATCH':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se guardó los cambios a grupo '+datos.grupo+' y materia '+datos.sigla,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-info',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'DELETE':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se eliminó el grupo '+datos.grupo+' de la materia '+datos.sigla,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-danger',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
                         tablaGrupos.bootstrapTable('refresh');            
                     }
                 },

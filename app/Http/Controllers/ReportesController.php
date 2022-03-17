@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\View;
+use Barryvdh\DomPDF\Facade as PDF;
+/* use Maatwebsite\Excel\Facade\Excel; */
+use App\Exports\RegistrosExport;
+use Illuminate\Support\Facades\Storage;
 
 use App\Http\Controllers\Controller;
+use App\Imports\RegistrosImport;
+use App\Imports\UsersImport;
+
 use Illuminate\Http\Request;
 use App\Models\Asignatura;
 use App\Models\Evento;
@@ -19,9 +26,11 @@ use App\Models\Estado;
 use App\Models\Area;
 use App\Models\Nivele;
 use App\Models\Titulo;
-use PDF;
+/* use PDF; */
+use Excel;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+/* use Maatwebsite\Excel\Excel as Excel; */
 
 class ReportesController extends Controller
 {
@@ -113,6 +122,32 @@ class ReportesController extends Controller
         $idUsuario = $request->user()->id;
         $usuarios = User::find($idUsuario);
         return View::make('reportes.horariosAulaPDF',['idActividad'=>$idActividad,'actividad'=>$actividad,'idColor'=>$idColor,'idAula'=>$idAula,'periodo'=>$periodo,'gestion'=>$gestion,'idPeriodo'=>$idPeriodo,'usuarios'=>$usuarios,'aula'=>$aula,'aulaAbrev'=>$aulaAbrev]);
+    }
+    public function expRegistros(Request $request){
+        $idGrupo = $request->idGrupo;
+        $idPeriodo = $request->idPeriodo;
+        $periodo = $request->periodo;
+        $gestion = $request->gestion;
+        $sigla = $request->sigla;
+        return Excel::download(new RegistrosExport($idGrupo,$idPeriodo,$gestion),$sigla.' '.$periodo.'-'.$gestion.'.xlsx');
+    }
+    public function impRegistros(Request $request){
+        $registros = $request->file('excelRegistros');
+        Excel::import(new RegistrosImport,$registros);
+        return back()->with('message','Importacion completada');
+    }
+    public function impUsuarios(Request $request){
+        $registros = $request->file('excelUsuarios');
+        Excel::import(new UsersImport,$registros);
+        return back()->with('message','Importacion completada');
+    }
+    public function plantillaUsuarios(Request $request){
+        $plantilla = Storage::path('public\plantillas\formato_usuarios.xlsx');
+        return response()->download($plantilla);
+    }
+    public function plantillaRegistros(Request $request){
+        $plantilla = Storage::path('public\plantillas\formato_registros.xlsx');
+        return response()->download($plantilla);
     }
     /**
      * Display a listing of the resource.

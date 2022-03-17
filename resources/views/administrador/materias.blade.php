@@ -171,7 +171,7 @@ $(document).ready(function(){
         },
         columns: [{
             field: 'id',
-            title: 'ID Materia',
+            title: 'Id',
             sortable: true,
             visible: false,
         }, {
@@ -232,6 +232,8 @@ $(document).ready(function(){
                 'click .eliminarMateria': function (e, value, row, index) {
                     datos = {
                         id: row.id,
+                        sigla: row.sigla,
+                        nombre: row.nombreMat,
                         '_token': $("meta[name='csrf-token']").attr("content"),
                         '_method': 'DELETE'
                     };
@@ -280,7 +282,7 @@ $(document).ready(function(){
         $.confirm({
             icon: 'fas fa-plus-circle',
             title: 'Crear materia',
-            content: '¿Confirma crear nueva materia ' + datosMateria.sigla + '?',
+            content: '¿Confirma crear la materia ' + datosMateria.nombre +' con sigla ' + datosMateria.sigla + '?',
             escapeKey: true,
             backgroundDismiss: true,
             type: 'green',
@@ -307,7 +309,7 @@ $(document).ready(function(){
         $.confirm({
             icon: 'fas fa-edit',
             title: 'Editar materia',
-            content: '¿Confirma editar datos de la materia ' + datosMateria.sigla + '?',
+            content: '¿Confirma guardar los cambios de la materia ' + datosMateria.nombre +' con sigla ' + datosMateria.sigla + '?',
             escapeKey: true,
             backgroundDismiss: true,
             type: 'blue',
@@ -331,8 +333,8 @@ $(document).ready(function(){
     function eliminarMateria(datos){
         $.confirm({
             icon: 'fas fa-exclamation-triangle',
-            title: '¿Eliminar materia?',
-            content: 'Recuerde que una vez eliminado la materia no se puede recuperar sus datos.',
+            title: '¿Eliminar la materia?',
+            content: 'Recuerde que una vez eliminado la materia '+datos.nombre +' con sigla ' + datos.sigla + ' no se puede recuperar sus datos.',
             type: 'red',
             buttons: {
                 confirmar: {
@@ -359,7 +361,52 @@ $(document).ready(function(){
             success: function(msg){
                 if(msg){
                     modificarMaterias.modal('hide');
-                    $.alert('Cambios guardados con éxito!');
+                    switch (datos['_method']) {
+                            case 'POST':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se creó la materia '+datos.nombre +' con sigla ' + datos.sigla,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-success',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'PATCH':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se guardó los cambios de la materia '+datos.nombre +' con sigla ' + datos.sigla,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-info',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'DELETE':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se eliminó la materia '+datos.nombre +' con sigla ' + datos.sigla,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-danger',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
                     tablaMaterias.bootstrapTable('refresh')
                     $('#errorValidacion').html('');;              
                 }

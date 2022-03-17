@@ -16,6 +16,7 @@ class CreateAcontecimientosTable extends Migration
         Schema::create('acontecimientos', function (Blueprint $table) {
             $table->id();
             $table->string('acontecimiento')->nullable();
+            $table->timestamps();
         });
     }
 

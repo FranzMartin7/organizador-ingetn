@@ -203,6 +203,40 @@ class InicioController extends Controller
         $gestiones = $mostrarEventos->mostrarGestiones();
         return view('docente.eventos',compact('asignaturas','aulas','actividades','periodos','gestiones'));
     }
+    public function docenteRegistro(Request $request)
+    {
+        $idUsuario = $request->user()->id;
+        $estudiantes = User::whereIn('nivele_id', [3,4])
+        ->orderBy('users.apPaterno')
+        ->orderBy('users.apMaterno')
+        ->orderBy('users.name')
+        ->get();
+        $semestres = Semestre::all();
+        $menciones = Mencione::all();
+        $actividades = Actividade::all();
+        $aulas = Aula::all();
+        $periodos = Periodo::all();
+        $semestres = Semestre::all();
+        $grupos = Grupo::join('materias','materias.id','grupos.materia_id')
+            ->join('asignaturas','asignaturas.grupo_id','grupos.id')
+            ->join('programas','programas.materia_id','materias.id')
+            ->join('semestres','programas.semestre_id','semestres.id')
+            ->selectRaw("distinct materias.nombreMat,
+                programas.semestre_id,
+                semestres.semestre,
+                materias.sigla,
+                grupos.*")
+            ->where('materias.estado_id',2)
+            ->where('asignaturas.user_id',$request->user()->id) 
+            ->orderBy('semestre_id')  
+            ->orderBy('nombreMat')
+            ->orderBy('grupo')
+            ->get();
+        $resultado = response()->json($grupos);
+        $mostrarEventos = new MostrarEventos();
+        $gestiones = $mostrarEventos->mostrarGestiones();
+        return view('docente.registros',compact('semestres','menciones','aulas','actividades','periodos','gestiones','grupos','semestres','idUsuario','estudiantes'));
+    }
     public function docenteReporte(Request $request)
     {
         $idUsuario = $request->user()->id;

@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>Organizador</b>ETN',
+    'logo' => '<b>Organizador</b>INGETN',
     'logo_img' => 'logos/logo.png',//'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -377,6 +377,14 @@ return [
             'icon_color' => 'cyan'
 /*             'label'       => 4,
             'label_color' => 'success', */
+        ], [
+            'text'        => 'Registros',
+            'url'         => '/inicioDocente/registro',
+            'icon'        => 'fas fa-user-edit',
+            'can'        => 'docente.reporte',
+            'icon_color' => 'orange'
+/*             'label'       => 4,
+            'label_color' => 'success', */
         ],
         [
             'text'        => 'Generar reporte',
@@ -446,15 +454,15 @@ return [
 /*             'label'       => 4,
             'label_color' => 'success', */
         ],
-        [
+/*         [
             'text'        => 'Inscripciones',
             'url'         => '/inicioEstudiante/registro',
             'icon'        => 'fas fa-user-edit',
             'can'        => 'estudiante.registro',
-            'icon_color' => 'orange'
+            'icon_color' => 'orange' */
 /*             'label'       => 4,
             'label_color' => 'success', */
-        ],
+        /* ], */
         [
             'text'        => 'Reportes',
             'url'         => '/inicioAuxiliar/reporteAuxiliar',

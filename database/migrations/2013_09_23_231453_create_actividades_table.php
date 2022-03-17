@@ -17,6 +17,7 @@ class CreateActividadesTable extends Migration
             $table->id();
             $table->string('actividad')->nullable();
             $table->string('actividadAbrev')->nullable();
+            $table->timestamps();
         });
     }
 

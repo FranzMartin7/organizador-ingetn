@@ -133,7 +133,7 @@ class MostrarEventos extends Controller
         ->where('eventos.gestion',$request->gestion)
         ->where('asignaturas.estado_id',2) 
         ->where('materias.estado_id',2) 
-        ->selectRaw("materias.sigla as title,
+        ->selectRaw("distinct materias.sigla as title,
             concat(eventos.fecha,'T',eventos.horaInicio) as start,
             concat(eventos.fecha,'T',eventos.horaFinal) as end,
             eventos.id as idEvento,
@@ -187,7 +187,7 @@ class MostrarEventos extends Controller
         ->where('eventos.gestion',$request->gestion)
         ->where('asignaturas.estado_id',2) 
         ->where('materias.estado_id',2) 
-        ->selectRaw("materias.sigla as title,
+        ->selectRaw("distinct materias.sigla as title,
             concat(eventos.fecha,'T',eventos.horaInicio) as start,
             concat(eventos.fecha,'T',eventos.horaFinal) as end,
             eventos.id as idEvento,
@@ -257,7 +257,7 @@ class MostrarEventos extends Controller
         ->where('registros.gestion',$request->gestion)
         ->where('asignaturas.estado_id',2) 
         ->where('materias.estado_id',2) 
-        ->selectRaw("materias.sigla as title,
+        ->selectRaw("distinct materias.sigla as title,
             concat(eventos.fecha,'T',eventos.horaInicio) as start,
             concat(eventos.fecha,'T',eventos.horaFinal) as end,
             eventos.id as idEvento,

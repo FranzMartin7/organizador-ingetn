@@ -18,6 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('apPaterno')->nullable();
             $table->string('apMaterno')->nullable();
+            $table->bigInteger('numeroCI')->nullable();
+            $table->bigInteger('registroUniv')->nullable();
             $table->foreignId('nivele_id')
                 ->nullable()
                 ->constrained('niveles')

@@ -17,6 +17,7 @@ class CreateAulasTable extends Migration
             $table->id();
             $table->string('aula')->nullable();
             $table->string('aulaAbrev')->nullable();
+            $table->timestamps();
         });
     }
 

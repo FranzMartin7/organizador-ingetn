@@ -528,7 +528,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Crear horario',
-                content: '¿Confirma crear éste nuevo horario en la asignatura?',
+                content: '¿Confirma crear horario de '+$('#txtIdAsignatura :selected').text()+' ?',
                 backgroundDismiss: true,
                 type: 'green',
                 buttons: {
@@ -555,7 +555,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar horario',
-                content: '¿Confirma editar los datos de éste horario?',
+                content: '¿Confirma guardar los cambios del horario de '+$('#txtIdAsignatura :selected').text()+' ?',
                 backgroundDismiss: true,
                 type: 'blue',
                 buttons: {
@@ -581,7 +581,7 @@
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
                 title: '¿Eliminar horario?',
-                content: 'Recuerde que una vez eliminado éste horario de la asignatura no se pueden recuperar sus datos.',
+                content: 'Recuerde que una vez eliminado el horario de '+$('#txtIdAsignatura :selected').text()+' no se pueden recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {
@@ -608,7 +608,7 @@
             $.confirm({
             icon: 'fas fa-plus-circle',
             title: '¿Generar eventos recurrentes?',
-            content: '¿Confirma generar eventos recurrentes de este horario para la gestión especificada?',
+            content: '¿Confirma generar eventos recurrentes del horario de '+$('#txtIdAsignatura :selected').text()+' para la gestion '+$('#idPeriodo :selected').text()+'/'+$('#txtGestion :selected').text()+' ?',
             escapeKey: true,
             backgroundDismiss: true,
             type: 'green',

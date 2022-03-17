@@ -9,11 +9,11 @@
 @stop
 @section('content')
 <!-- Panel de tabla de registros -->
-<div class="row mt-2">
-    <div class="col-12 col-sm-8">
+<div class="row">
+    <div class="col-12 col-sm-8 mt-2">
         <div class="lead font-weight-bold">ADMINISTRACIÓN REGISTROS</div> 
     </div>
-    <div class="col-12 col-sm-4">
+    <div class="col-12 col-sm-4 mt-2">
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text bg-primario font-weight-normal" id="addonGestion">Gestión</span>
@@ -28,11 +28,46 @@
                     <option value="{{ $valor }}">{{ $valor }}</option>
                 @endforeach
             </select>
+<!--             <div class="input-group-append">
+                <a href="{{ route('administrador.registrosExcel') }}" class="btn btn-success font-weight-normal" id="addonGestion">Exportar&nbsp;&nbsp;<i class="fas fa-file-excel"></i></a>
+            </div> -->
         </div>
     </div>       
 </div>
 <div class="table-responsive">
     <table id="tablaRegistros"></table>
+</div>
+<!-- Modal para importar registros -->
+<div class="modal fade" id="importarRegistros" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <div class="modal-title text-white">
+                    <div class="lead">Importar REGISTROS</div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('administrador.importarRegistros') }}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    @csrf
+                    @if(Session::has('message'))
+                        <p class="alert alert-default-success">{{ Session::get('message') }}</p>
+                    @endif
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Subir archivo (formato_registros.xlsx)</label>
+                        <input type="file" name="excelRegistros" id="excelRegistros" class="form-control-file" id="exampleFormControlFile1" required>
+                    </div>
+                </div>
+                <div class="modal-footer bg-primary">
+                    <a href="{{ route('administrador.plantillaRegistros') }}" type="button" class="btn btn-info btn-sm">Descargar plantilla&nbsp;&nbsp;<i class="fas fa-download"></i></a>
+                    <button class="btn btn-success btn-sm" id="btnImportar">Importar&nbsp;&nbsp;<i class="fas fa-file-excel"></i></button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- Modal para detalles de los registros -->
 <div class="modal fade" id="modificarRegistros" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -54,7 +89,7 @@
             </div>
             <input type="hidden" id="txtIdRegistro">
             <div class="form-row mb-2">
-                <label for="txtIdUsuario" class="col-sm-2 col-form-label">Nombre:</label>
+                <label for="txtIdUsuario" class="col-sm-2 col-form-label">Estudiante:</label>
                 <div class='col-sm-10'>
                 <select name='txtIdUsuario' id='txtIdUsuario' class="selectpicker form-control show-tick" data-live-search="true" required>
                     <option value="">Elegir estudiante</option>
@@ -142,7 +177,9 @@
         var txtGestion = $('#txtGestion');
         var btnAgregar = $('#btnAgregar');
         var btnGuardar = $('#btnGuardar');
+        var btnImportar = $('#btnImportar');
         var modificarRegistros = $('#modificarRegistros');
+        var importarRegistros = $('#importarRegistros');
         idPeriodo.val(convPeriodo(moment().format('MM')));
         gestion.val(moment().format('YYYY'));
         idPeriodo.selectpicker('refresh');
@@ -175,7 +212,7 @@
             buttonsClass:'primario',
             classes:'table table-bordered table-hover table-striped ',
             theadClasses: 'bg-primario font-weight-normal',
-            buttonsOrder:['nuevoRegistro' , 'refresh', 'autoRefresh', 'fullscreen', 'columns'],
+            buttonsOrder:['nuevoRegistro' , 'importarRegistros' ,'refresh', 'autoRefresh', 'fullscreen', 'columns'],
             buttons:{           
                 nuevoRegistro: {
                     text: 'Nuevo registro',
@@ -195,11 +232,28 @@
                         btnGuardar.hide();
                         formularioRegistro(datos);
                     }
+                },
+                importarRegistros: {
+                    text: 'Importar registros',
+                    icon: 'fa-file-excel',
+                    attributes:{title: 'Importar registro'},
+                    event: function () { 
+                        var datos;
+                        datos = {
+                            idRegistro: '',
+                            idUsuario: '',
+                            idPeriodo: idPeriodo.val(),
+                            gestion: gestion.val(),
+                            idGrupo: '',
+                            title: 'Nuevo REGISTRO'
+                        };
+                        importarRegistros.modal('show');;
+                    }
                 }
             },
             columns: [{
                 field: 'id',
-                title: 'ID Registro',
+                title: 'Id',
                 sortable: true,
                 visible: false
             }, {
@@ -257,6 +311,9 @@
                     'click .eliminarRegistro': function (e, value, row, index) {
                         datos = {
                             id: row.id,
+                            estudiante: row.estCompleto,
+                            sigla: row.sigla,
+                            grupo: row.grupo,
                             '_token': $("meta[name='csrf-token']").attr("content"),
                             '_method': 'DELETE'
                         };
@@ -287,7 +344,7 @@
         function recolectarRegistro(method){
             datosRegistro = {
                 id: txtIdRegistro.val(),
-                nombre: txtIdUsuario.val(),
+                estudiante: txtIdUsuario.val(),
                 periodo: txtIdPeriodo.val(),
                 gestion: txtGestion.val(),
                 materia: txtIdGrupo.val(),
@@ -318,7 +375,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Crear registro',
-                content: '¿Confirma crear nuevo registro?',
+                content: '¿Confirma crear el registro de '+$('#txtIdUsuario :selected').text()+' en la materia  '+$('#txtIdGrupo :selected').attr('title')+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -345,7 +402,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar registro',
-                content: '¿Confirma editar el registro?',
+                content: '¿Confirma guardar los cambios del registro de '+$('#txtIdUsuario :selected').text()+' en la materia  '+$('#txtIdGrupo :selected').attr('title')+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'blue',
@@ -365,12 +422,13 @@
                 }
             });
         });
+        
         /* Funcion para eliminar materia */
         function eliminarRegistro(datos){
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
                 title: '¿Eliminar registro?',
-                content: 'Recuerde que una vez eliminado el registro no se puede recuperar sus datos.',
+                content: 'Recuerde que una vez eliminado el registro de '+datos.estudiante+' en la materia  '+datos.sigla+' Grupo '+datos.grupo+' no se puede recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {
@@ -397,7 +455,52 @@
                 success: function(msg){
                     if(msg){
                         modificarRegistros.modal('hide');
-                        $.alert('Cambios guardados con éxito!');
+                        switch (datos['_method']) {
+                            case 'POST':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se creó el registro de '+$('#txtIdUsuario :selected').attr('title')+' en la materia  '+$('#txtIdGrupo :selected').attr('title'),
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-success',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'PATCH':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se guardó los cambios del registro de '+$('#txtIdUsuario :selected').attr('title')+' en la materia  '+$('#txtIdGrupo :selected').attr('title'),
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-info',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'DELETE':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se eliminó el registro de '+datos.estudiante+' en la materia  '+datos.sigla+' Grupo '+datos.grupo,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-danger',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
                         tablaRegistros.bootstrapTable('refresh');              
                     }
                 },

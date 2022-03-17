@@ -16,6 +16,7 @@ class CreateDocenciasTable extends Migration
         Schema::create('docencias', function (Blueprint $table) {
             $table->id();
             $table->string('docencia')->nullable();
+            $table->timestamps();
         });
     }
 

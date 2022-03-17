@@ -61,7 +61,7 @@
                         <div class='col-sm-8'>
                             <select name='txtIdMencion' id='txtIdMencion' class="selectpicker form-control show-tick" required>
                             @foreach($menciones as $valor)
-                                <option value="{{ $valor->id }}">{{ $valor->mencion }}</option>
+                                <option value="{{ $valor->id }}" title="{{ $valor->mencionAbrev }}">{{ $valor->mencion }}</option>
                             @endforeach
                             </select> 
                         </div> 
@@ -202,6 +202,8 @@
                         datos = {
                             id: row.id,
                             mencion: row.mencion,
+                            sigla: row.sigla,
+                            nombreMat: row.nombreMat,
                             '_token': $("meta[name='csrf-token']").attr("content"),
                             '_method': 'DELETE'
                         };
@@ -274,7 +276,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Asignar materia a mención',
-                content: '¿Confirma asignar ésta materia a la mención seleccionada?',
+                content: '¿Confirma asignar la materia '+$('#txtIdMateria :selected').attr('title')+' a la mencion  '+$('#txtIdMencion :selected').attr('title')+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -301,7 +303,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar materia de mención',
-                content: '¿Confirma editar datos de ésta materia de la mención seleccionada?',
+                content: '¿Confirma guardar los cambios de la materia '+$('#txtIdMateria :selected').attr('title')+' de la mencion  '+$('#txtIdMencion :selected').attr('title')+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'blue',
@@ -326,7 +328,7 @@
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
                 title: '¿Eliminar materia de mención?',
-                content: 'Recuerde que una vez eliminado ésta materia de la mención seleccionada no se puede recuperar sus datos.',
+                content: 'Recuerde que una vez eliminado la materia '+datos.nombreMat+' '+datos.sigla+' de la mencion  '+datos.mencion+' no se puede recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {
@@ -353,7 +355,52 @@
                 success: function(msg){
                     if(msg){
                         modificarProgramas.modal('hide');
-                        $.alert('Cambios guardados con éxito!');
+                        switch (datos['_method']) {
+                            case 'POST':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se asignó la materia '+$('#txtIdMateria :selected').attr('title')+' a la mencion  '+$('#txtIdMencion :selected').attr('title'),
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-success',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'PATCH':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se guardo los cambios a la materia '+$('#txtIdMateria :selected').attr('title')+' de la mencion  '+$('#txtIdMencion :selected').attr('title'),
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-info',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'DELETE':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se eliminó la materia '+datos.nombreMat+' '+datos.sigla+' de la mencion  '+datos.mencion,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-danger',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
                         tablaProgramas.bootstrapTable('refresh');
                         $('#errorValidacion').html('');              
                     }

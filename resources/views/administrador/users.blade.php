@@ -62,6 +62,24 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-row mb-2">
+                                <label for="txtCI" class="col-sm-3 col-form-label">CI:</label>
+                                <div class='col-sm-9'>
+                                    <input type="text" id="txtCI" name='txtCI' class="form-control" autocomplete="off" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-row mb-2">
+                                <label for="txtRU" class="col-sm-3 col-form-label">RU:</label>
+                                <div class='col-sm-9'>
+                                    <input type="text" id="txtRU" name='txtRU' class="form-control" autocomplete="off" required>
+                                </div> 
+                            </div>   
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-row mb-2">
                                 <label for="txtIdNivel" class="col-sm-3 col-form-label">Nivel:</label>
                                 <div class='col-sm-9'>
                                 <select name='txtIdNivel' id='txtIdNivel' class="selectpicker form-control show-tick" required>
@@ -71,7 +89,7 @@
                                     @endforeach 
                                 </select> 
                                 </div> 
-                            </div>   
+                            </div>  
                         </div>
                     </div>
                     <div class="form-row">
@@ -123,6 +141,38 @@
         </div>
     </div>
 </div>
+<!-- Modal para importar registros -->
+<div class="modal fade" id="importarUsuarios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <div class="modal-title text-white">
+                    <div class="lead">Importar USUARIOS</div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('administrador.importarUsuarios') }}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    @csrf
+                    @if(Session::has('message'))
+                        <p class="alert alert-default-success">{{ Session::get('message') }}</p>
+                    @endif
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Subir archivo (formato_usuarios.xlsx)</label>
+                        <input type="file" name="excelUsuarios" id="excelUsuarios" class="form-control-file" id="exampleFormControlFile1" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                    </div>
+                </div>
+                <div class="modal-footer bg-primary">
+                    <a href="{{ route('administrador.plantillaUsuarios') }}" type="button" class="btn btn-info btn-sm">Descargar plantilla&nbsp;&nbsp;<i class="fas fa-download"></i></a>
+                    <button class="btn btn-success btn-sm" id="btnImportar">Importar&nbsp;&nbsp;<i class="fas fa-file-excel"></i></button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('css')
@@ -140,6 +190,8 @@
         var txtApPaterno = $('#txtApPaterno');    
         var txtApMaterno=$('#txtApMaterno');
         var txtIdNivel = $('#txtIdNivel');
+        var txtCI = $('#txtCI');
+        var txtRU = $('#txtRU');
         var txtEmail =  $('#txtEmail');
         var txtUsuario = $('#txtUsuario');
         var txtContrasena = $('#txtContrasena');
@@ -148,6 +200,7 @@
         var btnAgregar = $('#btnAgregar');
         var btnGuardar = $('#btnGuardar');
         var modificarUsuarios = $('#modificarUsuarios');
+        var importarUsuarios = $('#importarUsuarios');
         /* Estructurador de la tabla de usuarios */
         tablaUsuarios.bootstrapTable({
             url:"{{ url('/user/show') }}",
@@ -169,7 +222,7 @@
             buttonsClass:'primario',
             classes:'table table-bordered table-hover table-striped',
             theadClasses: 'bg-primario font-weight-normal',
-            buttonsOrder:['nuevoUsuario' , 'refresh', 'autoRefresh', 'fullscreen', 'columns'],
+            buttonsOrder:['nuevoUsuario' , 'importarUsuarios', 'refresh', 'autoRefresh', 'fullscreen', 'columns'],
             buttons:{           
                 nuevoUsuario: {
                     text: 'Nuevo usuario',
@@ -182,6 +235,8 @@
                             nombres: '',
                             apPaterno: '',
                             apMaterno: '',
+                            numeroCI: '',
+                            registroUniv: '',
                             idNivel: '',
                             email: '',
                             contrasena: '',
@@ -193,11 +248,19 @@
                         btnGuardar.hide();
                         formularioUsuario(datos);
                     }
+                },
+                importarUsuarios: {
+                    text: 'Importar usuarios',
+                    icon: 'fa-file-excel',
+                    attributes:{title: 'Importar usuarios'},
+                    event: function () { 
+                        importarUsuarios.modal('show');;
+                    }
                 }
             },
             columns: [{
                 field: 'id',
-                title: 'ID Usuario',
+                title: 'Id',
                 sortable: true,
                 visible: false
             }, {
@@ -205,6 +268,16 @@
                 title: 'Apellidos y Nombres',
                 sortable: true
             }, {
+                field: 'numeroCI',
+                title: 'CI',
+                sortable: true,
+                visible: false
+            },{
+                field: 'registroUniv',
+                title: 'RU',
+                sortable: true,
+                visible: false
+            },{
                 field: 'nivelUsuario',
                 title: 'Nivel',
                 sortable: true,
@@ -231,7 +304,7 @@
                 field: 'tituloUsuario',
                 title: 'Titulo',
                 sortable: true,
-                visible: true
+                visible: false
             }, {
                 field: 'email',
                 title: 'Email',
@@ -240,7 +313,7 @@
             },{
                 field: 'estadoUsuario',
                 title: 'Estado',
-                sortable: true,
+                sortable: false,
                 formatter: function(valor,fila,indice){
                     if(valor=='Activo'){
                         var colorTexto = '<div class="text-success font-italic">'+valor+'</div>';
@@ -264,6 +337,8 @@
                             apPaterno: row.apPaterno,
                             apMaterno: row.apMaterno,
                             idNivel: row.nivele_id,
+                            numeroCI: row.numeroCI,
+                            registroUniv: row.registroUniv,
                             email: row.email,
                             contrasena: '',
                             idEstado: row.estado_id,
@@ -277,6 +352,9 @@
                     'click .eliminarUsuario': function (e, value, row, index) {
                         datos = {
                             id: row.id,
+                            nombres: row.name,
+                            apellido_paterno: row.apPaterno,
+                            apellido_materno: row.apMaterno,
                             '_token': $("meta[name='csrf-token']").attr("content"),
                             '_method': 'DELETE'
                         };
@@ -296,6 +374,8 @@
                 nombres: txtNombres.val(),
                 apellido_paterno: txtApPaterno.val(),
                 apellido_materno: txtApMaterno.val(),
+                CI: txtCI.val(),
+                RU: txtRU.val(),
                 nivel: txtIdNivel.val(),
                 email: txtEmail.val(),
                 contraseña: txtContrasena.val(),
@@ -314,6 +394,8 @@
             txtNombres.val(datos.nombres);
             txtApPaterno.val(datos.apPaterno);
             txtApMaterno.val(datos.apMaterno);
+            txtCI.val(datos.numeroCI);
+            txtRU.val(datos.registroUniv);
             txtIdNivel.val(datos.idNivel);
             txtEmail.val(datos.email);
             txtContrasena.val(datos.contrasena);
@@ -331,7 +413,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Crear usuario',
-                content: '¿Confirma crear nuevo usuario?',
+                content: '¿Confirma crear el usuario '+datosUsuario.apellido_paterno+' '+datosUsuario.apellido_materno+' '+datosUsuario.nombres+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -358,7 +440,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar usuario',
-                content: '¿Confirma editar datos del usuario?',
+                content: '¿Confirma crear el usuario '+datosUsuario.apellido_paterno+' '+datosUsuario.apellido_materno+' '+datosUsuario.nombres+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'blue',
@@ -382,7 +464,7 @@
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
                 title: '¿Eliminar usuario?',
-                content: 'Recuerde que una vez eliminado el usuario no se puede recuperar sus datos.',
+                content: 'Recuerde que una vez eliminado el usuario '+datos.apellido_paterno+' '+datos.apellido_materno+' '+datos.nombres+' no se puede recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {
@@ -410,7 +492,52 @@
                 success: function(sucess){
                     if(sucess){
                         modificarUsuarios.modal('hide');
-                        $.alert('Cambios guardados con éxito!');
+                        switch (datos['_method']) {
+                            case 'POST':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se creó el usuario '+datos.apellido_paterno+' '+datos.apellido_materno+' '+datos.nombres,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-success',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'PATCH':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se guardó los cambios del usuario '+datos.apellido_paterno+' '+datos.apellido_materno+' '+datos.nombres,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-info',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'DELETE':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se eliminó el usuario '+datos.apellido_paterno+' '+datos.apellido_materno+' '+datos.nombres,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-danger',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
                         tablaUsuarios.bootstrapTable('refresh');
                         $('#errorValidacion').html('');              
                     }

@@ -23,6 +23,12 @@ Route::post('/reporteAuxPDF','App\Http\Controllers\ReportesController@hojaAsiste
 Route::get('/horarioEstPDF','App\Http\Controllers\ReportesController@horarioEstudiante')->name('estudiante.horarioEstPDF');
 Route::post('/horariosSemestrePDF','App\Http\Controllers\ReportesController@horariosSemestre')->name('administrador.horariosSemestrePDF');
 Route::post('/horariosAulaPDF','App\Http\Controllers\ReportesController@horariosAula')->name('administrador.horariosAulaPDF');
+Route::get('/exportarRegistros','App\Http\Controllers\ReportesController@expRegistros')->name('administrador.registrosExcel');
+Route::post('/importarRegistros','App\Http\Controllers\ReportesController@impRegistros')->name('administrador.importarRegistros');
+Route::post('/importarUsuarios','App\Http\Controllers\ReportesController@impUsuarios')->name('administrador.importarUsuarios');
+Route::get('/plantillaUsuarios','App\Http\Controllers\ReportesController@plantillaUsuarios')->name('administrador.plantillaUsuarios');
+Route::get('/plantillaRegistros','App\Http\Controllers\ReportesController@plantillaRegistros')->name('administrador.plantillaRegistros');
+
 
 Route::post('/asignatura/datosAsignatura','App\Http\Controllers\AsignaturaController@datosAsignatura');
 Route::post('/registro/datosRegistro','App\Http\Controllers\RegistroController@datosRegistro');
@@ -75,6 +81,7 @@ Route::get('/inicioAdministrador/adminUsers','App\Http\Controllers\InicioControl
 Route::get('/inicioDocente/eventosVista','App\Http\Controllers\InicioController@docenteVista')->name('docente.eventosVista');
 Route::get('/inicioDocente/eventosEdicion','App\Http\Controllers\InicioController@docenteEdicion')->name('docente.eventosEdicion');
 Route::get('/inicioDocente/reporteDocente','App\Http\Controllers\InicioController@docenteReporte')->name('docente.reporte');
+Route::get('/inicioDocente/registro','App\Http\Controllers\InicioController@docenteRegistro')->name('docente.registro');
 Route::get('/inicioAuxiliar/eventosVista','App\Http\Controllers\InicioController@auxiliarVista')->name('auxiliar.eventosVista');
 Route::get('/inicioAuxiliar/eventosEdicion','App\Http\Controllers\InicioController@auxiliarEdicion')->name('auxiliar.eventosEdicion');
 Route::get('/inicioAuxiliar/reporteAuxiliar','App\Http\Controllers\InicioController@auxiliarReporte')->name('auxiliar.reporte');

@@ -17,6 +17,7 @@ class CreateTitulosTable extends Migration
             $table->id();
             $table->string('titulo')->nullable();
             $table->string('tituloAbrev')->nullable();
+            $table->timestamps();
         });
     }
 

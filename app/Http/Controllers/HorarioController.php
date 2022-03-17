@@ -89,7 +89,7 @@ class HorarioController extends Controller
         $request->validate([
             'periodo'=> 'required',
             'gestion'=> 'required',
-            'asignatura'=> 'required',
+            'asignatura'=> 'required|unique:horarios,asignatura_id,'.$request->id.',id,periodo_id,'.$request->periodo.',gestion,'.$request->gestion.',dia,'.$request->dia.',horaInicio,'.$request->hora_inicio,
             'dia'=> 'required',
             'aula'=> 'required',
             'hora_inicio'=> 'required',

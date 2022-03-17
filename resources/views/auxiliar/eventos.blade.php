@@ -641,7 +641,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Crear evento',
-                content: '¿Confirma crear éste nuevo evento en la materia?',
+                content: '¿Confirma crear el evento '+$('#txtIdActividad :selected').text()+' en '+$('#idAsignatura :selected').text()+'?',
                 backgroundDismiss: true,
                 type: 'green',
                 buttons: {
@@ -667,7 +667,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar evento',
-                content: '¿Confirma editar los datos de éste evento?',
+                content: '¿Confirma guardar cambios del evento de '+$('#txtIdActividad :selected').text()+' en '+$('#idAsignatura :selected').text()+'?',
                 backgroundDismiss: true,
                 type: 'blue',
                 buttons: {
@@ -693,7 +693,7 @@
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
                 title: '¿Eliminar evento?',
-                content: 'Recuerde que una vez eliminado éste evento de la materia no se pueden recuperar sus datos.',
+                content: 'Recuerde que una vez eliminado el evento de '+$('#txtIdActividad :selected').text()+' en '+$('#idAsignatura :selected').text()+' no se pueden recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {

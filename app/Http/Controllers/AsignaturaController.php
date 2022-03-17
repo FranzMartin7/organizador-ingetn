@@ -111,7 +111,7 @@ class AsignaturaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'materia'=> 'required',
+            'materia'=> 'required|unique:asignaturas,grupo_id,null,id,user_id,'.$request->docente.',actividade_id,'.$request->actividad.',docencia_id,'.$request->docencia,
             'docente'=> 'required',
             'actividad'=> 'required',
             'docencia'=> 'required',
@@ -188,7 +188,7 @@ class AsignaturaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'materia'=> 'required',
+            'materia'=> 'required|unique:asignaturas,grupo_id,'.$request->id.',id,user_id,'.$request->docente.',actividade_id,'.$request->actividad.',docencia_id,'.$request->docencia,
             'docente'=> 'required',
             'actividad'=> 'required',
             'docencia'=> 'required',

@@ -30,6 +30,8 @@ class User extends Authenticatable
         'name',
         'apPaterno',
         'apMaterno',
+        'numeroCI',
+        'registroUniv',
         'nivele_id',
         'estado_id',
         'titulo_id',

@@ -17,6 +17,7 @@ class CreateMencionesTable extends Migration
             $table->id();
             $table->string('mencion')->nullable();
             $table->string('mencionAbrev')->nullable();
+            $table->timestamps();
         });
     }
 

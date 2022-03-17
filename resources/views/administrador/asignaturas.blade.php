@@ -196,7 +196,7 @@
             },
             columns: [{
                 field: 'id',
-                title: 'ID Asignatura',
+                title: 'Id',
                 sortable: true,
                 visible: false
             }, {
@@ -222,13 +222,13 @@
                 sortable: true,
                 formatter: function(valor,fila,indice){
                     switch (valor) {
-                        case 'Teoria':
+                        case 'Teoría':
                             var colorTexto = '<div class="card text-center m-0 bg-danger">'+valor+'</div>';                        
                             break;                    
                         case 'Laboratorio':
                             var colorTexto = '<div class="card text-center m-0 bg-azul">'+valor+'</div>';                        
                             break;
-                        case 'Ayudantia':
+                        case 'Ayudantía':
                             var colorTexto = '<div class="card text-center m-0 bg-verde">'+valor+'</div>';                       
                             break;
                         default:
@@ -288,6 +288,9 @@
                     'click .eliminarAsignatura': function (e, value, row, index) {
                         datos = {
                             id: row.id,
+                            sigla: row.sigla,
+                            docente: row.docAbrev,
+                            grupo: row.grupo,
                             '_token': $("meta[name='csrf-token']").attr("content"),
                             '_method': 'DELETE'
                         };
@@ -340,7 +343,7 @@
             $.confirm({
                 icon: 'fas fa-plus-circle',
                 title: 'Crear asignatura',
-                content: '¿Confirma crear nueva asignatura de la materia seleccionada?',
+                content: '¿Confirma crear la asignatura de '+$('#txtIdGrupo :selected').attr('title')+' del '+$('#txtIdUsuario :selected').attr('title')+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'green',
@@ -367,7 +370,7 @@
             $.confirm({
                 icon: 'fas fa-edit',
                 title: 'Editar asignatura',
-                content: '¿Confirma editar los datos de la asignatura?',
+                content: '¿Confirma guardar los cambiar de la asignatura '+$('#txtIdGrupo :selected').attr('title')+' del '+$('#txtIdUsuario :selected').attr('title')+'?',
                 escapeKey: true,
                 backgroundDismiss: true,
                 type: 'blue',
@@ -392,7 +395,7 @@
             $.confirm({
                 icon: 'fas fa-exclamation-triangle',
                 title: '¿Eliminar asignatura?',
-                content: 'Recuerde que una vez eliminado la asignatura no se puede recuperar sus datos.',
+                content: 'Recuerde que una vez eliminado la asignatura '+datos.sigla+' Grupo '+datos.grupo+' del '+datos.docente+' no se podrá recuperar sus datos.',
                 type: 'red',
                 buttons: {
                     confirmar: {
@@ -419,7 +422,52 @@
                 success: function(msg){
                     if(msg){
                         modificarAsignaturas.modal('hide');
-                        $.alert('Cambios guardados con éxito!');
+                        switch (datos['_method']) {
+                            case 'POST':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se creó la asignatura de '+$('#txtIdGrupo :selected').attr('title')+' del '+$('#txtIdUsuario :selected').attr('title'),
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-success',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'PATCH':
+                                $.alert({
+                                    title:false,
+                                    content: "Se guardó los cambios de la asignatura de "+$('#txtIdGrupo :selected').attr('title')+" del "+$('#txtIdUsuario :selected').attr('title'),
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-info',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            case 'DELETE':
+                                $.alert({
+                                    title:false,
+                                    content: 'Se eliminó la asignatura '+datos.sigla+' Grupo '+datos.grupo+' del '+datos.docente,
+                                    buttons: {
+                                        cancelar: {
+                                            titleClass:'',
+                                            text:'Aceptar',
+                                            btnClass: 'btn-danger',
+                                            action: function(){}
+                                        }
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
                         tablaAsignaturas.bootstrapTable('refresh');
                     }  
                 },

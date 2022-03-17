@@ -42,7 +42,7 @@
                         <div class="input-group-prepend">
                             <label for="idSemestre" class="input-group-text bg-primario font-weight-normal" id="addonIdSemestre">Semestre</label>
                         </div>
-                        <select name='idSemestre' id='idSemestre' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdSemestre" required>
+                        <select name='idSemestre' id='idSemestre' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdSemestre" data-live-search="true" title="Elegir semestre" required>
                             @foreach($semestres as $valor)
                                 <option value="{{ $valor->id }}">{{ $valor->semestre }}</option>
                             @endforeach 
@@ -52,7 +52,7 @@
                         <div class="input-group-prepend">
                             <label for="idMencion" class="input-group-text bg-primario font-weight-normal" id="addonIdMencion">Mención</label>
                         </div>
-                        <select name='idMencion' id='idMencion' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdMencion" required>
+                        <select name='idMencion' id='idMencion' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdMencion" title="Elegir mención" required>
                             @foreach($menciones as $valor)
                                 <option value="{{ $valor->id }}">{{ $valor->mencion }}</option>
                             @endforeach 
@@ -73,15 +73,15 @@
                         <div class="input-group-prepend">
                             <label for="idcolor" class="input-group-text bg-primario font-weight-normal" id="addonIdColor">Color de horarios</label>
                         </div>
-                        <select name='idColorSem' id='idColorSem' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdColor"  required>
-                            <option value="1">Color</option>
+                        <select name='idColorSem' id='idColorSem' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdColor" title="Elegir color" required>
+                            <option value="1">Colores</option>
                             <option value="2">Escala de grises</option>
                         </select>
                     </div>
                 </div>
                 <div class="card-footer bg-primario">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-danger btn-sm" type="submit" id="btnExportarSem">Exportar horario&nbsp;&nbsp;<span class="fas fa-file-pdf"></span></button> 
+                        <button class="btn btn-danger btn-sm" type="submit" id="btnExportarSem">Exportar horario semestre&nbsp;&nbsp;<span class="fas fa-file-pdf"></span></button> 
                     </div>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                         <div class="input-group-prepend">
                             <label for="idAula" class="input-group-text bg-primario font-weight-normal" id="addonIdAula">Aula</label>
                         </div>
-                        <select name='idAula' id='idAula' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdAula" required>
+                        <select name='idAula' id='idAula' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdAula" data-live-search="true" title="Elegir aula" required>
                             @foreach($aulas as $valor)
                                 <option value="{{ $valor->id }}" title="{{ $valor->aulaAbrev }}">{{ $valor->aula }}</option>
                             @endforeach 
@@ -122,15 +122,15 @@
                         <div class="input-group-prepend">
                             <label for="idcolor" class="input-group-text bg-primario font-weight-normal" id="addonIdColorAula">Color de horarios</label>
                         </div>
-                        <select name='idColorAula' id='idColorAula' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdColorAula">
-                            <option value="1">Color</option>
+                        <select name='idColorAula' id='idColorAula' class="selectpicker form-control show-tick" aria-label="Small" aria-describedby="addonIdColorAula" title="Elegir color" required>
+                            <option value="1">Colores</option>
                             <option value="2">Escala de grises</option>
                         </select>
                     </div>
                 </div>
                 <div class="card-footer bg-primario">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-danger btn-sm" type="submit" id="btnExportarAula">Exportar Horario&nbsp;&nbsp;<span class="fas fa-file-pdf"></span></button> 
+                        <button class="btn btn-danger btn-sm" type="submit" id="btnExportarAula">Exportar horario aula&nbsp;&nbsp;<span class="fas fa-file-pdf"></span></button> 
                     </div>
                 </div>
             </div>

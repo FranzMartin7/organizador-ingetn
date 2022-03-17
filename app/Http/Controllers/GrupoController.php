@@ -36,8 +36,8 @@ class GrupoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'materia'=> 'required',
-            'grupo'=> 'required'
+            'materia'=> 'required|unique:grupos,materia_id,null,id,grupo,'.$request->grupo,
+            'grupo'=> 'required|unique:grupos,grupo,null,id,materia_id,'.$request->materia
         ]);
         $respuesta = Grupo::create([
             'materia_id'=>request('materia'),
