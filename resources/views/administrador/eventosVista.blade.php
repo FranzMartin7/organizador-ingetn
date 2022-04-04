@@ -4,6 +4,42 @@
 
 @section('content_header')
 @stop
+@section('right-sidebar')
+    <div class="container-fluid">
+        <div class="row mt-1">
+            <div class="col-6 px-0">
+                <a href="" class="btn btn-light rounded btn-lg btn-block">
+                    <i class="fas fa-users"></i>
+                    <div class="small">Sistema</div>
+                    <div class="small">Red social</div>
+                </a>
+            </div>
+            <div class="col-6 px-0">
+                <a href="http://localhost/sist_comunicados/index.php" class="btn btn-light rounded btn-lg btn-block">
+                    <i class="fas fa-clipboard text-danger"></i>
+                    <div class="small">Sistema de</div>
+                    <div class="small">Comunicados</div>
+                </a>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-6 px-0">
+                <a href="" class="btn btn-light rounded btn-lg btn-block">
+                    <i class="fas fa-book"></i>
+                    <div class="small">Sistema de</div>
+                    <div class="small">Biblioteca</div>
+                </a>
+            </div>
+            <div class="col-6 px-0">
+                <a href="http://localhost/sist_comunicados/index.php" class="btn btn-light rounded btn-lg btn-block">
+                    <i class="fas fa-comment-alt"></i>
+                    <div class="small">Sistema de</div>
+                    <div class="small">Mensajería</div>
+                </a>
+            </div>
+        </div>
+    </div>
+@endsection 
 @section('content')
 <!-- Panel de eventos del docente en modo vista -->
 <div class="row mt-1">

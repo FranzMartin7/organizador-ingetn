@@ -5,6 +5,7 @@
 @section('content_header')
 
 @stop
+
 @section('content')
 <!-- Panel de eventos del docente en modo vista -->
 <div class="row mt-1">
