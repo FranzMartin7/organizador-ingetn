@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'id'=>'1',
+            'id'=>'777',
             'name'=>'Franz Martin',
             'apPaterno'=>'Chuquichambi',
             'apMaterno'=>'Ramos',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'password'=> bcrypt('6744782')
         ])->assignRole('Administrador');
         User::create([
-            'id'=>'2',
+            'id'=>'1',
             'name'=>'Administrador',
             'apPaterno'=>'Administrador',
             'apMaterno'=>'Administrador',
